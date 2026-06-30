@@ -1,13 +1,18 @@
+@Ctoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM4OTkwNTlhOTZkZGIyMzMzYTM5NSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MjgxMzI2MiwiZXhwIjoxNzgyODk5NjYyfQ.BgRK21Uhle7nSo5w4dhzsZn-TCothUhI1iJYfkXni0E
+
+@Otoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM5YmI5NGFkMWU0YjM3ZDM3ZDZjOCIsInJvbGUiOiJzdG9yZV9vd25lciIsImlhdCI6MTc4MjgxNjEwOCwiZXhwIjoxNzgyOTAyNTA4fQ.4Qk8ONy93-uJ9NqIRk3_wtzvJ66qAL461pTFaugKFbg
+
+@Atoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM5YmQzNGFkMWU0YjM3ZDM3ZDZjOSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4MjgxNTg2NCwiZXhwIjoxNzgyOTAyMjY0fQ._Xt39r7vBsuLZkPiibYeL2YvAXHzP2KoS62HlQp1LVo
 ### Register Customer
 
 POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
-    "firstName": "Kevin",
-    "lastName": "Perez",
-    "email": "kevin@gmail.com",
-    "password": "123456"
+    "firstName": "Store",
+    "lastName": "Owner",
+    "email": "store-owner@gmail.com",
+    "password": "123456",
 }
 
 ### Login
@@ -16,7 +21,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "kevin@gmail.com",
+    "email": "owner@gmail.com",
     "password": "123456"
 }
 
@@ -29,3 +34,29 @@ Content-Type: application/json
     "email": "kevin@gmail.com",
     "password": "wrongpassword"
 }
+
+### Profile without Token
+
+GET http://localhost:3000/api/auth/profile
+
+### Profile with Token
+
+GET http://localhost:3000/api/auth/profile
+Authorization: Bearer {{Ctoken}}
+
+### Testing Customer Account
+
+GET http://localhost:3000/api/auth/customer
+Authorization: Bearer {{Ctoken}}
+
+
+### Testing Store Owner Account
+
+GET http://localhost:3000/api/auth/store-owner
+Authorization: Bearer {{Otoken}}
+
+
+### Testing Admin Account
+
+GET http://localhost:3000/api/auth/admin
+Authorization: Bearer {{Atoken}}
