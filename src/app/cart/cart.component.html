@@ -1,0 +1,99 @@
+<section
+  class="min-h-screen bg-[#F0EBE1] flex items-start justify-center p-12 gap-4"
+>
+  <div class="w-5/6 flex flex-col gap-8 border shadow-2xl p-8">
+    <div class="text-3xl">
+      <strong>Your Cart</strong>
+    </div>
+
+    <ng-container *ngIf="cartItems.length; else emptyCart">
+      <div class="flex flex-col gap-6">
+        <div
+          class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm"
+          *ngFor="let item of cartItems"
+        >
+          <div class="flex items-center gap-4">
+            <div
+              class="w-[150px] h-[150px] overflow-hidden rounded-lg bg-[#F8F4EE]"
+            >
+              <img
+                [src]="item.imageUrl || 'assets/images/Rvsd__1.jpg'"
+                [alt]="item.name"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex flex-col gap-2 text-lg">
+              <strong>{{ item.name }}</strong>
+              <strong>₱ {{ item.price | number: "1.0-0" }}</strong>
+            </div>
+          </div>
+
+          <div class="flex gap-2 items-center">
+            <button
+              class="p-2 w-12 h-12 bg-black text-white rounded-full"
+              (click)="decreaseQuantity(item)"
+            >
+              −
+            </button>
+            <div class="p-4 text-xl font-semibold">
+              {{ item.quantity || 1 }}
+            </div>
+            <button
+              class="p-2 w-12 h-12 bg-black text-white rounded-full"
+              (click)="increaseQuantity(item)"
+            >
+              +
+            </button>
+          </div>
+
+          <div>
+            <button
+              class="text-red-600 p-4 rounded-lg"
+              (click)="removeItem(item.id)"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #emptyCart>
+      <div class="text-center text-[#2E2E2E] py-20">
+        <p class="text-xl font-semibold">Your cart is empty.</p>
+        <p class="opacity-70 mt-2">
+          Add a product from the shop to see it here.
+        </p>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="w-1/2 shadow-lg p-8 h-fit flex flex-col gap-4 bg-[#F8F4EE]">
+    <div class="text-2xl">
+      <b>Order Summary</b>
+    </div>
+    <div class="flex flex-col gap-6 mt-4">
+      <div class="flex items-center justify-between">
+        <p class="text-[#2E2E2E]">Subtotal</p>
+        <strong>₱ {{ subtotal | number: "1.0-0" }}</strong>
+      </div>
+      <div class="flex items-center justify-between">
+        <p class="text-[#2E2E2E]">Delivery Fee</p>
+        <strong>₱ {{ deliveryFee | number: "1.0-0" }}</strong>
+      </div>
+      <div
+        class="flex items-center justify-between border-t border-[#E5DFD5] pt-4"
+      >
+        <strong class="text-[#2E2E2E]">Total</strong>
+        <strong>₱ {{ total | number: "1.0-0" }}</strong>
+      </div>
+
+      <button
+        class="bg-black p-4 text-white disabled:opacity-50"
+        [disabled]="!cartItems.length"
+      >
+        Check out
+      </button>
+    </div>
+  </div>
+</section>

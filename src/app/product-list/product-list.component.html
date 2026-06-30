@@ -1,0 +1,69 @@
+<section class="p-8 mt-8">
+  <div class="flex items-center justify-between mb-12 gap-4">
+    <div>
+      <h4 class="text-[#C8A97E]">COLLECTIONS</h4>
+    </div>
+    <div class="flex items-center relative">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        class="p-4 rounded-full bg-[#2E2E2E] w-96 text-white opacity-50"
+        placeholder="Search..."
+      />
+      <i
+        class="fa-solid fa-search text-[#F0EBE1] text-2xl absolute right-5"
+      ></i>
+    </div>
+    <div class="cursor-pointer text-[#F0EBE1] flex items-center gap-2">
+      <button
+        type="button"
+        class="p-2 rounded-full bg-[#2E2E2E]"
+        (click)="toggleSort()"
+        [title]="sortLabel"
+      >
+        <i class="fa-solid fa-sort text-xl"></i>
+      </button>
+      <span class="text-sm opacity-70">{{ sortLabel }}</span>
+    </div>
+  </div>
+  <div class="relative">
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:grid-cols-5"
+      *ngIf="displayedProducts.length; else noProducts"
+    >
+      <div
+        class="w-[250px] h-fit flex flex-col items-center py-4 px-2 gap-4 bg-[#F0EBE1] hover:-translate-y-4 transition duration-300 ease-in cursor-pointer"
+        *ngFor="let product of displayedProducts"
+      >
+        <div class="w-[200px] h-[200px]">
+          <img src="{{ product.imageUrl }}" alt="{{ product.name }}" />
+        </div>
+        <div class="w-5/6">
+          <strong>{{ product.name }}</strong>
+          <p class="text-sm">{{ "&#8369; " + product.price }}</p>
+        </div>
+        <div
+          class="bg-[#C8A97E] p-4 w-5/6 text-center text-white rounded-lg"
+          (click)="addToCart(product)"
+        >
+          <button>
+            <i class="fa-solid fa-cart-arrow-down"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="showToast"
+      class="fixed bottom-6 right-6 max-w-xs rounded-xl bg-black/90 px-5 py-3 text-white shadow-xl backdrop-blur-sm"
+    >
+      {{ toastMessage }}
+    </div>
+
+    <ng-template #noProducts>
+      <div class="text-center text-white">
+        <p>No products available right now.</p>
+      </div>
+    </ng-template>
+  </div>
+</section>
