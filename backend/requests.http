@@ -9,3 +9,23 @@ Content-Type: application/json
     "email": "kevin@gmail.com",
     "password": "123456"
 }
+
+### Login
+
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "kevin@gmail.com",
+    "password": "123456"
+}
+
+### Invalid Login
+
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "kevin@gmail.com",
+    "password": "wrongpassword"
+}
