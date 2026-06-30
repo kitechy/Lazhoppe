@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { ShopService } from '../product/shop.service';
 import { CartService } from '../cart/cart.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -11,8 +12,9 @@ import { CartService } from '../cart/cart.service';
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   searchTerm = '';
-  sortOption = '';
   errorMessage = '';
+  productsPerCategory = 5;
+  selectedCategory: string | null = null;
   private sortOptions = [
     '',
     'name-asc',
@@ -24,9 +26,19 @@ export class ProductListComponent implements OnInit {
   constructor(
     private shopService: ShopService,
     private cartService: CartService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      if (params['category']) {
+        this.selectedCategory = params['category'];
+      } else {
+        this.selectedCategory = null;
+      }
+    });
+
     this.shopService.getProducts().subscribe({
       next: (data) => {
         this.products = data;
@@ -46,52 +58,58 @@ export class ProductListComponent implements OnInit {
       result = result.filter((p) => p.name.toLowerCase().includes(q));
     }
 
-    switch (this.sortOption) {
-      case 'name-asc':
-        result.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case 'name-desc':
-        result.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-      case 'price-asc':
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        result.sort((a, b) => b.price - a.price);
-        break;
+    if (this.selectedCategory) {
+      result = result.filter((p) => p.category === this.selectedCategory);
     }
 
     return result;
   }
 
-  onSort(option: string) {
-    this.sortOption = option;
+  get groupedProducts(): Map<string, Product[]> {
+    const grouped = new Map<string, Product[]>();
+    const filtered = this.displayedProducts;
+
+    filtered.forEach((product) => {
+      const category = product.category || 'Uncategorized';
+      if (!grouped.has(category)) {
+        grouped.set(category, []);
+      }
+      grouped.get(category)!.push(product);
+    });
+
+    return grouped;
   }
 
-  toggleSort() {
-    const idx = this.sortOptions.indexOf(this.sortOption);
-    const next = (idx + 1) % this.sortOptions.length;
-    this.sortOption = this.sortOptions[next];
+  get categories(): string[] {
+    return Array.from(this.groupedProducts.keys());
+  }
+
+  getProductsByCategory(category: string): Product[] {
+    return this.groupedProducts.get(category) || [];
+  }
+
+  getDisplayedProductsByCategory(category: string): Product[] {
+    const products = this.getProductsByCategory(category);
+    return products.slice(0, this.productsPerCategory);
+  }
+
+  hasMoreProducts(category: string): boolean {
+    return (
+      this.getProductsByCategory(category).length > this.productsPerCategory
+    );
+  }
+
+  viewAllCategory(category: string): void {
+    this.router.navigate(['/shop/category', category]);
+  }
+
+  goBackToShop(): void {
+    this.router.navigate(['/shop']);
   }
 
   toastMessage = '';
   showToast = false;
   private toastTimeout?: ReturnType<typeof setTimeout>;
-
-  get sortLabel(): string {
-    switch (this.sortOption) {
-      case 'name-asc':
-        return 'Name A–Z';
-      case 'name-desc':
-        return 'Name Z–A';
-      case 'price-asc':
-        return 'Price low→high';
-      case 'price-desc':
-        return 'Price high→low';
-      default:
-        return 'Sort';
-    }
-  }
 
   addToCart(product: any) {
     this.cartService.addToCart(product);

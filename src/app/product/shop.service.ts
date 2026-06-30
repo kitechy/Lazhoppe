@@ -7,7 +7,7 @@ import { Product } from '../models/product';
   providedIn: 'root',
 })
 export class ShopService {
-  private apiUrl = 'http://localhost:3000/shop';
+  private apiUrl = 'http://localhost:3000/api/products';
 
   constructor(private http: HttpClient) {}
 
@@ -42,5 +42,19 @@ export class ShopService {
 
     console.error('ShopService HTTP error:', error);
     return throwError(() => new Error(message));
+  }
+
+  getProduct(id: number): Observable<Product> {
+    return this.http
+      .get<Product>(`${this.apiUrl}/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse | Error) =>
+          this.handleError(error),
+        ),
+      );
+  }
+
+  getProductsByCategory(category: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/category/${category}`);
   }
 }
