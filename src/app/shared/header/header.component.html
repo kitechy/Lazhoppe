@@ -1,25 +1,12 @@
 <header
-  class="flex items-center justify-between border-b border-[#2E2E2E] py-10 px-8"
+  class="flex items-center justify-between border-b border-[#2E2E2E] py-10 px-8 bg-black"
 >
   <div class="" routerLink="/">
     <h1 class="logo text-[40px] text-[#F0EBE1] h-[25px] cursor-pointer">
       Rvsd
     </h1>
   </div>
-  <nav class="flex gap-4 mr-8">
-    <div
-      class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
-      routerLink="/shop"
-    >
-      <i class="fa-solid fa-shop"></i>
-      <a>SHOP</a>
-    </div>
-    <div
-      class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
-    >
-      <i class="fa-solid fa-shirt"></i>
-      <a>COLLECTIONS</a>
-    </div>
+  <nav class="flex gap-6 item-center text-[#F0EBE1]">
     <div
       class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
       routerLink="/cart"
@@ -27,5 +14,46 @@
       <i class="fa-solid fa-cart-arrow-down"></i>
       <a>CART</a>
     </div>
+    <div
+      class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
+      routerLink="/shop"
+    >
+      <i class="fa-solid fa-shop"></i>
+      <a>SHOP</a>
+    </div>
+
+    <!-- Not Logged In -->
+    <ng-container *ngIf="!authService.isLoggedIn(); else loggedInMenu">
+      <div
+        class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
+        routerLink="/login"
+      >
+        <a>LOGIN</a>
+      </div>
+      <div
+        class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
+        routerLink="/register"
+      >
+        <a>REGISTER</a>
+      </div>
+    </ng-container>
+
+    <!-- Logged In -->
+    <ng-template #loggedInMenu>
+      <div class="flex items-center gap-4 text-white">
+        <!-- <i class="fa-solid fa-circle-user text-3xl"></i>
+
+        <span class="text-lg">
+          {{ currentUser?.firstName }}
+        </span> -->
+
+        <button
+          (click)="logout()"
+          class="text-red-500 hover:text-red-600 transition duration-300"
+        >
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        </button>
+      </div>
+    </ng-template>
   </nav>
 </header>

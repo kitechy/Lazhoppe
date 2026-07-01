@@ -1,4 +1,4 @@
-@Ctoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM4OTkwNTlhOTZkZGIyMzMzYTM5NSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MjgxMzI2MiwiZXhwIjoxNzgyODk5NjYyfQ.BgRK21Uhle7nSo5w4dhzsZn-TCothUhI1iJYfkXni0E
+@Ctoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDRiNmRiNzI1ZjFmNDMzNjNiMzY1MiIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MjkwMzA5NywiZXhwIjoxNzgyOTg5NDk3fQ.eKDycb8DCvSyNpb-D32SnZHj42H7dIMNJ7PYKCPjEuo
 
 @Otoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM5YmI5NGFkMWU0YjM3ZDM3ZDZjOCIsInJvbGUiOiJzdG9yZV9vd25lciIsImlhdCI6MTc4MjgxNjEwOCwiZXhwIjoxNzgyOTAyNTA4fQ.4Qk8ONy93-uJ9NqIRk3_wtzvJ66qAL461pTFaugKFbg
 
@@ -21,8 +21,8 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "owner@gmail.com",
-    "password": "123456"
+    "email": "jiveneo@gmail.com",
+    "password": "12345678"
 }
 
 ### Invalid Login
@@ -60,3 +60,24 @@ Authorization: Bearer {{Otoken}}
 
 GET http://localhost:3000/api/auth/admin
 Authorization: Bearer {{Atoken}}
+
+### Testing Add to Cart
+
+POST http://localhost:3000/api/cart
+Authorization: Bearer {{Ctoken}}
+Content-Type: application/json
+
+{
+    "productId": "6a435fcd4ad1e4b37d37d695",
+    "quantity": 1
+}
+
+### Testing Get Cart
+
+GET http://localhost:3000/api/cart
+Authorization: Bearer {{Ctoken}}
+
+### Testing Remove from Cart
+
+DELETE http://localhost:3000/api/cart/6a435fcd4ad1e4b37d37d69b
+Authorization: Bearer {{Ctoken}}

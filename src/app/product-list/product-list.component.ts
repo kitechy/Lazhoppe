@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { ShopService } from '../product/shop.service';
-import { CartService } from '../cart/cart.service';
+
 import { Router, ActivatedRoute } from '@angular/router';
+import { CartService } from '../features/cart/cart.service';
+import { AuthService } from '../core/services/auth-service';
 
 @Component({
   selector: 'app-product-list',
@@ -15,19 +17,14 @@ export class ProductListComponent implements OnInit {
   errorMessage = '';
   productsPerCategory = 5;
   selectedCategory: string | null = null;
-  private sortOptions = [
-    '',
-    'name-asc',
-    'name-desc',
-    'price-asc',
-    'price-desc',
-  ];
+  
 
   constructor(
     private shopService: ShopService,
     private cartService: CartService,
     private router: Router,
     private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -111,16 +108,39 @@ export class ProductListComponent implements OnInit {
   showToast = false;
   private toastTimeout?: ReturnType<typeof setTimeout>;
 
-  addToCart(product: any) {
-    this.cartService.addToCart(product);
-    this.toastMessage = `${product.name} added to cart`;
-    this.showToast = true;
+  addToCart(product: Product): void {
 
-    if (this.toastTimeout) {
-      clearTimeout(this.toastTimeout);
+  if (!this.authService.isLoggedIn()) {
+
+    const goToLogin = confirm(
+      'You need to log in before adding items to your cart.\n\nGo to Login page?'
+    );
+
+    if (goToLogin) {
+      this.router.navigate(['/login']);
     }
-    this.toastTimeout = setTimeout(() => {
-      this.showToast = false;
-    }, 2200);
+
+    return;
   }
+
+  this.cartService.addToCart(product._id).subscribe({
+    next: () => {
+
+      this.toastMessage = `${product.name} added to cart`;
+      this.showToast = true;
+
+      if (this.toastTimeout) {
+        clearTimeout(this.toastTimeout);
+      }
+
+      this.toastTimeout = setTimeout(() => {
+        this.showToast = false;
+      }, 2200);
+    },
+
+    error: (err) => {
+      console.error(err);
+    }
+  });
+}
 }

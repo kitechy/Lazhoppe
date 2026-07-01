@@ -1,0 +1,30 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+  <div>
+    <label>Email</label>
+    <input
+      type="email"
+      formControlName="email"
+      placeholder="Email"
+    />
+  </div>
+
+  <div>
+    <label>Password</label>
+    <input
+      type="password"
+      formControlName="password"
+      placeholder="Password"
+    />
+  </div>
+
+  <button type="submit" [disabled]="loginForm.invalid">
+    Login
+  </button>
+
+</form>
+
+<p>
+  Don't have an account?
+  <a routerLink="/register">Register</a>
+</p>
