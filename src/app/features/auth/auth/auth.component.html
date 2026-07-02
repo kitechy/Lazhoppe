@@ -1,0 +1,28 @@
+<section class="flex items-center justify-center h-full mt-10">
+  <div class="auth-container text-[#2E2E2E] w-fit flex flex-col gap-3">
+    <div
+      class="tabs flex items-center justify-start gap-6 border-b-2 border-[#2E2E2E]"
+    >
+      <button
+        (click)="showLogin()"
+        [class.py-3]="isLogin"
+        [class.border-b-4]="isLogin"
+        [class.border-[#C8A97E]]="isLogin"
+        [class.text-white]="isLogin"
+      >
+        LOG IN
+      </button>
+      <button
+        (click)="showSignup()"
+        [class.py-3]="!isLogin"
+        [class.border-b-4]="!isLogin"
+        [class.border-[#C8A97E]]="!isLogin"
+        [class.text-white]="!isLogin"
+      >
+        SIGN UP
+      </button>
+    </div>
+    <app-login *ngIf="isLogin"></app-login>
+    <app-register *ngIf="!isLogin"></app-register>
+  </div>
+</section>

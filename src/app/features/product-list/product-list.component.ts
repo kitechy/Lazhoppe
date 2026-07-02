@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../models/product';
 import { ShopService } from '../product/shop.service';
-
 import { Router, ActivatedRoute } from '@angular/router';
-import { CartService } from '../features/cart/cart.service';
-import { AuthService } from '../core/services/auth-service';
+import { Product } from 'src/app/models/product';
+import { CartService } from '../cart/cart.service';
+import { AuthService } from 'src/app/core/services/auth-service';
 
 @Component({
   selector: 'app-product-list',
@@ -17,14 +16,13 @@ export class ProductListComponent implements OnInit {
   errorMessage = '';
   productsPerCategory = 5;
   selectedCategory: string | null = null;
-  
 
   constructor(
     private shopService: ShopService,
     private cartService: CartService,
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -109,38 +107,35 @@ export class ProductListComponent implements OnInit {
   private toastTimeout?: ReturnType<typeof setTimeout>;
 
   addToCart(product: Product): void {
+    if (!this.authService.isLoggedIn()) {
+      const goToLogin = confirm(
+        'You need to log in before adding items to your cart.\n\nGo to Login page?',
+      );
 
-  if (!this.authService.isLoggedIn()) {
-
-    const goToLogin = confirm(
-      'You need to log in before adding items to your cart.\n\nGo to Login page?'
-    );
-
-    if (goToLogin) {
-      this.router.navigate(['/login']);
-    }
-
-    return;
-  }
-
-  this.cartService.addToCart(product._id).subscribe({
-    next: () => {
-
-      this.toastMessage = `${product.name} added to cart`;
-      this.showToast = true;
-
-      if (this.toastTimeout) {
-        clearTimeout(this.toastTimeout);
+      if (goToLogin) {
+        this.router.navigate(['/auth']);
       }
 
-      this.toastTimeout = setTimeout(() => {
-        this.showToast = false;
-      }, 2200);
-    },
-
-    error: (err) => {
-      console.error(err);
+      return;
     }
-  });
-}
+
+    this.cartService.addToCart(product._id).subscribe({
+      next: () => {
+        this.toastMessage = `${product.name} added to cart`;
+        this.showToast = true;
+
+        if (this.toastTimeout) {
+          clearTimeout(this.toastTimeout);
+        }
+
+        this.toastTimeout = setTimeout(() => {
+          this.showToast = false;
+        }, 2200);
+      },
+
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
 }

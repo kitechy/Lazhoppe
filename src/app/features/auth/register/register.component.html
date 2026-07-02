@@ -1,43 +1,84 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <div>
-    <label>First Name</label>
-    <input type="text" formControlName="firstName" placeholder="First Name" />
+<div class="register-form bg-transparent w-2xs flex flex-col gap-4">
+  <div class="flex flex-col gap-2">
+    <b class="text-md text-[#C8A97E]">NEW COLLECTION - SS 2026</b>
+    <b class="text-4xl text-white">Join the movement.</b>
+    <p class="text-[#2E2E2E] text-sm mt-2">
+      Create your account for early drop access, order tracking, and member-only
+      pricing.
+    </p>
   </div>
-
-  <div>
-    <label>Last Name</label>
-    <input type="text" formControlName="lastName" placeholder="Last Name" />
-  </div>
-
-  <div>
-    <label>Email</label>
-    <input type="email" formControlName="email" placeholder="Email" />
-  </div>
-
-  <div>
-    <label>Password</label>
-    <input type="password" formControlName="password" placeholder="Password" />
-  </div>
-
-  <div>
-    <label>Confirm Password</label>
-    <input
-      type="password"
-      formControlName="confirmPassword"
-      placeholder="Confirm Password"
-    />
-  </div>
-
-  <button
-    type="submit"
-    [disabled]="registerForm.invalid"
-    class=""
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-col gap-4"
   >
-    Register
-  </button>
-</form>
+    <div class="flex flex-col gap-2">
+      <label>First Name</label>
+      <input
+        type="text"
+        formControlName="firstName"
+        placeholder="First Name"
+        class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+      />
+    </div>
 
-<p>
-  Already have an account?
-  <a routerLink="/login">Login</a>
-</p>
+    <div class="flex flex-col gap-2">
+      <label>Last Name</label>
+      <input
+        type="text"
+        formControlName="lastName"
+        placeholder="Last Name"
+        class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label>Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="you@example.com"
+        class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label>Password</label>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+        class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label>Confirm Password</label>
+      <input
+        type="password"
+        formControlName="confirmPassword"
+        placeholder="Confirm Password"
+        class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+      />
+    </div>
+    <div class="flex items-center justify-between mt-2 p-2 mb-10">
+      <div class="text-[#2E2E2E] text-sm">
+        <p>
+          Already have an account?
+          <a (click)="showLogin()" class="text-[#C8A97E] ml-2 cursor-pointer"
+            >Log in</a
+          >
+        </p>
+      </div>
+      <div>
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid"
+          class="bg-[#C8A97E] text-[#2E2E2E] p-4 rounded-full w-fit items-center justify-center flex gap-2"
+        >
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

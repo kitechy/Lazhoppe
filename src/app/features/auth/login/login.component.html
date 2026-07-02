@@ -1,30 +1,55 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-  <div>
-    <label>Email</label>
-    <input
-      type="email"
-      formControlName="email"
-      placeholder="Email"
-    />
+<div class="login-form bg-transparent w-2xs flex flex-col gap-4">
+  <div class="flex flex-col gap-2">
+    <b class="text-md text-[#C8A97E]">RETURNING MEMBER</b>
+    <b class="text-4xl text-white">Good to see you.</b>
+    <p class="text-[#2E2E2E] text-sm mt-2">
+      Enter your details to access your account, order history, and saved fits.
+    </p>
   </div>
 
-  <div>
-    <label>Password</label>
-    <input
-      type="password"
-      formControlName="password"
-      placeholder="Password"
-    />
-  </div>
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-col gap-3"
+  >
+    <div class="flex flex-col gap-2">
+      <label class="text-[#2E2E2E] text-bold">Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="you@example.com"
+        class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+      />
+    </div>
 
-  <button type="submit" [disabled]="loginForm.invalid">
-    Login
-  </button>
+    <div class="flex flex-col gap-2">
+      <label class="text-[#2E2E2E]">Password</label>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+        class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+      />
+    </div>
 
-</form>
-
-<p>
-  Don't have an account?
-  <a routerLink="/register">Register</a>
-</p>
+    <div class="flex items-center justify-between mt-2 p-2">
+      <div class="text-[#2E2E2E] text-sm">
+        <p>
+          Don't have an account?
+          <a (click)="showSignup()" class="text-[#C8A97E] cursor-pointer ml-2"
+            >Create an account</a
+          >
+        </p>
+      </div>
+      <div>
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid"
+          class="bg-[#C8A97E] text-[#2E2E2E] p-4 rounded-full w-fit items-center justify-center flex gap-2"
+        >
+          <i class="fa-solid fa-arrow-right text-black text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -6,7 +6,7 @@
       Rvsd
     </h1>
   </div>
-  <nav class="flex gap-6 item-center text-[#F0EBE1]">
+  <nav class="flex gap-4 item-center text-[#F0EBE1]">
     <div
       class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
       routerLink="/cart"
@@ -26,15 +26,10 @@
     <ng-container *ngIf="!authService.isLoggedIn(); else loggedInMenu">
       <div
         class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
-        routerLink="/login"
+        routerLink="/auth"
       >
+        <i class="fa-solid fa-arrow-right-to-bracket"></i>
         <a>LOGIN</a>
-      </div>
-      <div
-        class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
-        routerLink="/register"
-      >
-        <a>REGISTER</a>
       </div>
     </ng-container>
 

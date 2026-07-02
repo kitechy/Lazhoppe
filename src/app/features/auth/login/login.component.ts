@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth-service';
+import { AuthComponent } from '../auth/auth.component';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private auth: AuthComponent,
   ) {}
 
   loginForm = this.fb.nonNullable.group({
@@ -44,5 +46,9 @@ export class LoginComponent {
         alert(err.error.message);
       },
     });
+  }
+
+  showSignup() {
+    this.auth.showSignup();
   }
 }

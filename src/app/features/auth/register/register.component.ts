@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth-service';
+import { AuthComponent } from '../auth/auth.component';
 
 @Component({
   selector: 'app-register',
@@ -13,6 +14,7 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private auth: AuthComponent,
   ) {}
 
   registerForm = this.fb.nonNullable.group({
@@ -38,11 +40,15 @@ export class RegisterComponent {
     this.authService.register(user).subscribe({
       next: () => {
         alert('Registration successful!');
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth']);
       },
       error: (err) => {
         alert(err.error.message);
       },
     });
+  }
+
+  showLogin() {
+    this.auth.showLogin();
   }
 }
