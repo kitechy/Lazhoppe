@@ -33,21 +33,37 @@
       </div>
     </ng-container>
 
-    <!-- Logged In -->
     <ng-template #loggedInMenu>
-      <div class="flex items-center gap-4 text-white">
-        <!-- <i class="fa-solid fa-circle-user text-3xl"></i>
+      <div class="flex items-center">
+        <div class="relative inline-block">
+          <button
+            (click)="toggleDropdown()"
+            class="h-10 w-10 rounded-full bg-[#2E2E2E] flex items-center justify-center font-semibold overflow-hidden"
+          >
+            <i class="fa-solid fa-user"></i>
+          </button>
 
-        <span class="text-lg">
-          {{ currentUser?.firstName }}
-        </span> -->
+          <div
+            *ngIf="isDropdownOpen"
+            class="absolute right-0 mt-2 w-56 rounded-lg bg-[#2E2E2E] shadow-lg z-50"
+          >
+            <a
+              routerLink="/apply-store"
+              class="block px-4 py-2 hover:bg-gray-100 rounded-lg hover:text-[#2E2E2E]"
+            >
+              <i class="fa-solid fa-shop"></i>
+              Apply as Store Owner
+            </a>
 
-        <button
-          (click)="logout()"
-          class="text-red-500 hover:text-red-600 transition duration-300"
-        >
-          <i class="fa-solid fa-arrow-right-to-bracket"></i>
-        </button>
+            <button
+              (click)="logout()"
+              class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg text-red-600"
+            >
+              Log out
+              <i class="fa-solid fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </ng-template>
   </nav>

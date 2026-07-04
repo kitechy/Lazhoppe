@@ -5,3 +5,250 @@
     Review new sellers before they go live on Rvsd.
   </p>
 </div>
+
+<div
+  class="mt-8 overflow-hidden rounded-2xl bg-[#111111] border border-[#2E2E2E]"
+>
+  <table class="w-full">
+    <thead class="bg-[#1B1B1B]">
+      <tr class="text-left text-[#C8A97E]">
+        <th class="px-6 py-4">Applicant</th>
+        <th class="px-6 py-4">Store</th>
+        <th class="px-6 py-4">Phone</th>
+        <th class="px-6 py-4">Status</th>
+        <th class="px-6 py-4 text-center">Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let application of applications"
+        class="border-t border-[#2E2E2E] hover:bg-[#181818] transition"
+      >
+        <!-- Applicant -->
+        <td class="px-6 py-5">
+          <div class="flex flex-col">
+            <span class="font-semibold text-white">
+              {{ application.user?.firstName }}
+              {{ application.user?.lastName }}
+            </span>
+
+            <span class="text-sm text-gray-400">
+              {{ application.user?.email }}
+            </span>
+          </div>
+        </td>
+
+        <!-- Store -->
+        <td class="px-6 py-5">
+          <div class="flex flex-col">
+            <span class="font-semibold text-white">
+              {{ application.storeName }}
+            </span>
+
+            <span class="text-sm text-gray-400 truncate max-w-xs">
+              {{ application.description }}
+            </span>
+          </div>
+        </td>
+
+        <!-- Phone -->
+        <td class="px-6 py-5 text-white">
+          {{ application.phone }}
+        </td>
+
+        <!-- Status -->
+        <td class="px-6 py-5">
+          <span
+            *ngIf="application.status === 'pending'"
+            class="rounded-full bg-yellow-500/20 text-yellow-400 px-3 py-1 text-sm"
+          >
+            Pending
+          </span>
+
+          <span
+            *ngIf="application.status === 'approved'"
+            class="rounded-full bg-green-500/20 text-green-400 px-3 py-1 text-sm"
+          >
+            Approved
+          </span>
+
+          <span
+            *ngIf="application.status === 'rejected'"
+            class="rounded-full bg-red-500/20 text-red-400 px-3 py-1 text-sm"
+          >
+            Rejected
+          </span>
+        </td>
+
+        <!-- Actions -->
+        <td class="px-6 py-5">
+          <div class="flex justify-center gap-3">
+            <button
+              (click)="viewApplication(application)"
+              class="bg-[#C8A97E] text-black px-4 py-2 rounded-lg hover:opacity-90"
+            >
+              View Details
+            </button>
+          </div>
+        </td>
+      </tr>
+
+      <!-- Empty State -->
+      <tr *ngIf="applications.length === 0">
+        <td colspan="5" class="py-10 text-center text-gray-400">
+          No store applications found.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Modal Backdrop -->
+  <div
+    *ngIf="showModal"
+    class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+  >
+    <!-- Modal -->
+    <div
+      class="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-[#2E2E2E] bg-[#111111] shadow-2xl"
+    >
+      <!-- Header -->
+      <div
+        class="flex items-center justify-between border-b border-[#2E2E2E] px-6 py-5"
+      >
+        <div>
+          <h2 class="text-2xl font-bold text-white">Store Application</h2>
+
+          <p class="text-[#C8A97E] text-sm mt-1">
+            Review applicant information
+          </p>
+        </div>
+
+        <button
+          (click)="closeModal()"
+          class="text-gray-400 hover:text-white text-2xl"
+        >
+          &times;
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div
+        *ngIf="selectedApplication"
+        class="flex-1 overflow-y-auto p-6 space-y-6 text-white"
+      >
+        <div>
+          <label class="text-gray-400 text-sm">Applicant</label>
+
+          <p class="text-lg font-semibold">
+            {{ selectedApplication.user?.firstName }}
+            {{ selectedApplication.user?.lastName }}
+          </p>
+        </div>
+
+        <div>
+          <label class="text-gray-400 text-sm">Email</label>
+
+          <p>
+            {{ selectedApplication.user?.email }}
+          </p>
+        </div>
+
+        <div>
+          <label class="text-gray-400 text-sm">Store Name</label>
+
+          <p>
+            {{ selectedApplication.storeName }}
+          </p>
+        </div>
+
+        <div>
+          <label class="text-gray-400 text-sm">Description</label>
+
+          <p>
+            {{ selectedApplication.description }}
+          </p>
+        </div>
+
+        <div>
+          <label class="text-gray-400 text-sm">Business Address</label>
+
+          <p>
+            {{ selectedApplication.address }}
+          </p>
+        </div>
+
+        <div>
+          <label class="text-gray-400 text-sm">Phone Number</label>
+
+          <p>
+            {{ selectedApplication.phone }}
+          </p>
+        </div>
+
+        <div>
+          <label class="text-gray-400 text-sm">Status</label>
+
+          <div class="mt-2">
+            <span
+              *ngIf="selectedApplication.status === 'pending'"
+              class="rounded-full bg-yellow-500/20 text-yellow-400 px-3 py-1 text-sm"
+            >
+              Pending
+            </span>
+
+            <span
+              *ngIf="selectedApplication.status === 'approved'"
+              class="rounded-full bg-green-500/20 text-green-400 px-3 py-1 text-sm"
+            >
+              Approved
+            </span>
+
+            <span
+              *ngIf="selectedApplication.status === 'rejected'"
+              class="rounded-full bg-red-500/20 text-red-400 px-3 py-1 text-sm"
+            >
+              Rejected
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="selectedApplication.remarks">
+          <label class="text-gray-400 text-sm">Admin Remarks</label>
+
+          <p class="text-red-400">
+            {{ selectedApplication.remarks }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="flex justify-end gap-3 border-t border-[#2E2E2E] bg-[#111111] px-6 py-5"
+        *ngIf="selectedApplication"
+      >
+        <button
+          (click)="closeModal()"
+          class="px-5 py-2 rounded-lg border border-gray-600 text-white hover:bg-[#1A1A1A]"
+        >
+          Close
+        </button>
+
+        <button
+          *ngIf="selectedApplication.status === 'pending'"
+          (click)="approve(selectedApplication._id!); closeModal()"
+          class="px-5 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white"
+        >
+          Approve
+        </button>
+
+        <button
+          *ngIf="selectedApplication.status === 'pending'"
+          (click)="reject(selectedApplication._id!); closeModal()"
+          class="px-5 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white"
+        >
+          Reject
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

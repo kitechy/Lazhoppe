@@ -1,14 +1,41 @@
 <header>
-  <div class="text-white flex items-center justify-start p-8 gap-3">
-    <div>
-      <p class="logo text-[40px] text-[#F0EBE1] h-[25px] cursor-pointer">
-        Rvsd
-      </p>
+  <div class="flex items-center justify-between">
+    <div class="text-white flex items-center justify-start p-8 gap-3">
+      <div>
+        <p class="logo text-[40px] text-[#F0EBE1] h-[25px] cursor-pointer">
+          Rvsd
+        </p>
+      </div>
+      <div
+        class="text-[8px] border-2 border-[#C8A97E] text-[#C8A97E] p-1 rounded-full text-bold"
+      >
+        <p>ADMIN</p>
+      </div>
     </div>
-    <div
-      class="text-[8px] border-2 border-[#C8A97E] text-[#C8A97E] p-1 rounded-full text-bold"
-    >
-      <p>ADMIN</p>
+    <div class="px-6">
+      <div class="flex items-center">
+        <div class="relative inline-block">
+          <button
+            (click)="toggleDropdown()"
+            class="h-10 w-10 rounded-full bg-[#F0EBE1] flex items-center justify-center font-semibold overflow-hidden"
+          >
+            <i class="fa-solid fa-user"></i>
+          </button>
+
+          <div
+            *ngIf="isDropdownOpen"
+            class="absolute right-0 mt-2 w-56 rounded-lg bg-[#2E2E2E] shadow-lg z-50"
+          >
+            <button
+              (click)="logout()"
+              class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded-lg text-red-600"
+            >
+              Log Out
+              <i class="fa-solid fa-sign-out"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -16,8 +43,8 @@
 <div class="min-h-screen flex bg-[#0A0A0A]">
   <app-sidebar></app-sidebar>
 
-  <div class="">
-    <main class="p-8">
+  <div class="flex-1 overflow-x-auto">
+    <main class="p-8 w-full">
       <router-outlet></router-outlet>
     </main>
   </div>

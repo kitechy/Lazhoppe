@@ -1,0 +1,75 @@
+<section class="max-w-2xl mx-auto py-10">
+  <div class="flex flex-col mb-6 gap-2">
+    <h1 class="text-3xl font-bold text-[#C8A97E]">
+      Apply as a Store Owner <i class="fa-solid fa-shop"></i>
+    </h1>
+    <p class="text-[#2E2E2E] text-md">
+      Resell local good shit products as you wish bitch.
+    </p>
+  </div>
+
+  <form (ngSubmit)="submitApplication()" class="flex flex-col gap-5">
+    <div class="flex flex-col gap-2">
+      <label for="" class="text-[#2E2E2E] text-md">Store Name</label>
+      <input
+        type="text"
+        placeholder="Store Name"
+        [(ngModel)]="application.storeName"
+        name="storeName"
+        required
+        class="p-3 rounded-lg bg-[#2E2E2E] text-white"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="" class="text-[#2E2E2E] text-md">Description</label>
+      <textarea
+        placeholder="Business Description"
+        [(ngModel)]="application.description"
+        name="description"
+        rows="4"
+        required
+        class="p-3 rounded-lg bg-[#2E2E2E] text-white"
+      ></textarea>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="" class="text-[#2E2E2E] text-md">Address</label>
+      <input
+        type="text"
+        placeholder="Business Address"
+        [(ngModel)]="application.address"
+        name="address"
+        required
+        class="p-3 rounded-lg bg-[#2E2E2E] text-white"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="" class="text-[#2E2E2E] text-md">Phone Number</label>
+      <input
+        type="text"
+        placeholder="Phone Number"
+        [(ngModel)]="application.phone"
+        name="phone"
+        required
+        class="p-3 rounded-lg bg-[#2E2E2E] text-white"
+      />
+    </div>
+
+    <div
+      class="text-[#2E2E2E] py-3 rounded-lg flex items-center justify-center bg-[#C8A97E] mt-2"
+    >
+      <button type="submit" [disabled]="loading">
+        {{ loading ? "Submitting..." : "Submit Application" }}
+      </button>
+    </div>
+  </form>
+
+  <p *ngIf="successMessage" class="text-green-600 mt-4">
+    {{ successMessage }}
+  </p>
+
+  <p *ngIf="errorMessage" class="text-red-600 mt-4">
+    {{ errorMessage }}
+  </p>
+</section>

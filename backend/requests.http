@@ -1,8 +1,8 @@
-@Ctoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDRiNmRiNzI1ZjFmNDMzNjNiMzY1MiIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MjkwMzA5NywiZXhwIjoxNzgyOTg5NDk3fQ.eKDycb8DCvSyNpb-D32SnZHj42H7dIMNJ7PYKCPjEuo
+@Ctoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDVjNzM4ZDFlM2FhNGNhNzg4NTVmYyIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MzE3NDMxNCwiZXhwIjoxNzgzMjYwNzE0fQ.7v0adflaqqVYSVHxVrrdEkBZ_-knHdXC9yCaCGtOnDM
 
 @Otoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM5YmI5NGFkMWU0YjM3ZDM3ZDZjOCIsInJvbGUiOiJzdG9yZV9vd25lciIsImlhdCI6MTc4MjgxNjEwOCwiZXhwIjoxNzgyOTAyNTA4fQ.4Qk8ONy93-uJ9NqIRk3_wtzvJ66qAL461pTFaugKFbg
 
-@Atoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM5YmQzNGFkMWU0YjM3ZDM3ZDZjOSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4MjgxNTg2NCwiZXhwIjoxNzgyOTAyMjY0fQ._Xt39r7vBsuLZkPiibYeL2YvAXHzP2KoS62HlQp1LVo
+@Atoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM4OTkwNTlhOTZkZGIyMzMzYTM5NSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4MzE3NDA1NSwiZXhwIjoxNzgzMjYwNDU1fQ.22ZJvkrhPFVQkPXDb4a4Mzb9kYdt85h-p3QNJgJcYpQ
 ### Register Customer
 
 POST http://localhost:3000/api/auth/register
@@ -21,7 +21,7 @@ POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "jiveneo@gmail.com",
+    "email": "jeremysandres@gmail.com",
     "password": "12345678"
 }
 
@@ -81,3 +81,36 @@ Authorization: Bearer {{Ctoken}}
 
 DELETE http://localhost:3000/api/cart/6a435fcd4ad1e4b37d37d69b
 Authorization: Bearer {{Ctoken}}
+
+### Testing Send for an Application (POST)
+
+POST http://localhost:3000/api/store-applications
+Authorization: Bearer {{Ctoken}}
+Content-Type: application/json
+
+{
+  "storeName": "Kevin's Coffee Shop",
+  "description": "Coffee and pastries",
+  "address": "Manila",
+  "phone": "09123456789"
+}
+
+### Testing Viewing of Applications (ADMIN)
+
+GET http://localhost:3000/api/store-applications
+Authorization: Bearer {{Atoken}}
+
+### Testing Approval of an Application
+
+PUT http://localhost:3000/api/store-applications/6a4912b414a1e162d39e1788/approve
+Authorization: Bearer {{Atoken}}
+
+### Testing Rejecting of an Application
+
+PUT http://localhost:3000/api/store-applications/6a4914be14a1e162d39e1789/reject
+Authorization: Bearer {{Atoken}}
+
+### Testing Getting All User
+
+GET http://localhost:3000/api/users
+Authorization: Bearer {{Atoken}}

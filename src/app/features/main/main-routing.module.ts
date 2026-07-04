@@ -6,6 +6,7 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { CartComponent } from './cart/cart.component';
 import { AuthComponent } from './auth/auth/auth.component';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
+import { ApplyStoreComponent } from './store-owner/apply-store/apply-store.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,11 @@ const routes: Routes = [
       {
         path: 'auth',
         component: AuthComponent,
+      },
+      {
+        path: 'apply-store',
+        component: ApplyStoreComponent,
+        canActivate: [AuthGuard],
       },
     ],
   },

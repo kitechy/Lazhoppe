@@ -8,10 +8,15 @@ import { AuthService } from 'src/app/core/services/auth-service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
+  isDropdownOpen = false;
   constructor(
     public authService: AuthService,
     private router: Router,
   ) {}
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
 
   logout(): void {
     this.authService.logout();
