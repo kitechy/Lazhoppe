@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'Wankstaberg';
+  src: url('/assets/fonts/WankstabergBattles.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.logo {
+    font-family: "Wankstaberg", sans-serif;
+}
+
+header {
+  border-bottom: 1px solid #2E2E2E;
+}

@@ -1,0 +1,58 @@
+<div class="bg-[#0A0A0A]">
+  <div class="text-white flex items-center justify-start p-8 gap-3">
+    <div>
+      <p class="logo text-[40px] text-[#F0EBE1] h-[25px] cursor-pointer">
+        Rvsd
+      </p>
+    </div>
+    <div
+      class="text-[8px] border-2 border-[#C8A97E] text-[#C8A97E] p-1 rounded-full text-bold"
+    >
+      <p>ADMIN</p>
+    </div>
+  </div>
+
+  <div class="flex h-full items-center justify-center">
+    <div
+      class="border-2 border-grey-500 flex flex-col gap-4 w-[500px] p-8 mt-10 rounded-2xl"
+    >
+      <div class="flex flex-col">
+        <h1 class="text-md text-[#C8A97E]">ADMIN ACCESS</h1>
+        <b class="text-4xl text-white">Sign in to your <br />dashboard.</b>
+        <p class="text-[#2E2E2E] text-sm mt-2">
+          Manage users, review store applications, and track orders across Rvsd.
+        </p>
+      </div>
+
+      <form (ngSubmit)="login()" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label class="text-[#2E2E2E] text-bold">Email Address</label>
+          <input
+            class="border w-full p-3 rounded mb-4"
+            type="email"
+            placeholder="you@example.com"
+            [(ngModel)]="email"
+            name="email"
+            class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <label class="text-[#2E2E2E] text-bold">Password</label>
+          <input
+            class="border w-full p-3 rounded mb-6"
+            type="password"
+            placeholder="Password"
+            [(ngModel)]="password"
+            name="password"
+            class="border bg-[#2E2E2E] p-4 border-none opacity-50 rounded-md text-white"
+          />
+        </div>
+        <div
+          class="bg-[#C8A97E] text-[#0A0A0A] p-3 rounded-lg flex items-center justify-center mt-2 cursor-pointer"
+        >
+          <button>Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
