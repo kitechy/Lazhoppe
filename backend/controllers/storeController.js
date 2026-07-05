@@ -1,4 +1,5 @@
 const Store = require("../models/Store");
+const Product = require("../models/Product");
 
 // Create Store
 exports.createStore = async (req, res) => {
@@ -80,25 +81,37 @@ exports.updateStore = async (req, res) => {
       });
     }
 
-    const {
-      storeName,
-      description,
-      address,
-      phone,
-      latitude,
-      longitude,
-      logo,
-      banner,
-    } = req.body;
+    if (req.body.storeName !== undefined) {
+      store.storeName = req.body.storeName;
+    }
 
-    store.storeName = storeName;
-    store.description = description;
-    store.address = address;
-    store.phone = phone;
-    store.latitude = latitude;
-    store.longitude = longitude;
-    store.logo = logo;
-    store.banner = banner;
+    if (req.body.description !== undefined) {
+      store.description = req.body.description;
+    }
+
+    if (req.body.address !== undefined) {
+      store.address = req.body.address;
+    }
+
+    if (req.body.phone !== undefined) {
+      store.phone = req.body.phone;
+    }
+
+    if (req.body.latitude !== undefined) {
+      store.latitude = req.body.latitude;
+    }
+
+    if (req.body.longitude !== undefined) {
+      store.longitude = req.body.longitude;
+    }
+
+    if (req.body.logo !== undefined) {
+      store.logo = req.body.logo;
+    }
+
+    if (req.body.banner !== undefined) {
+      store.banner = req.body.banner;
+    }
 
     await store.save();
 
@@ -111,6 +124,46 @@ exports.updateStore = async (req, res) => {
 
     res.status(500).json({
       message: "Failed to update store.",
+    });
+  }
+};
+
+exports.getDashboard = async (req, res) => {
+  try {
+    const store = await Store.findOne({
+      owner: req.user.id,
+    });
+
+    if (!store) {
+      return res.status(404).json({
+        message: "Store not found",
+      });
+    }
+
+    const products = await Product.find({
+      store: store._id,
+    }).sort({
+      createdAt: -1,
+    });
+
+    const totalProducts = products.length;
+    const activeProducts = products.filter((p) => p.isActive).length;
+    const inactiveProducts = products.filter((p) => !p.isActive).length;
+
+    res.json({
+      store,
+      stats: {
+        totalProducts,
+        activeProducts,
+        inactiveProducts,
+      },
+      recentProducts: products.slice(0, 5),
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to load dashboard.",
     });
   }
 };

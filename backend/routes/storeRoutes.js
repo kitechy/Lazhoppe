@@ -12,4 +12,6 @@ router.get("/me", authenticate, storeController.getMyStore);
 
 router.put("/me", authenticate, storeController.updateStore);
 
+router.get("/dashboard", authenticate, storeController.getDashboard);
+
 module.exports = router;

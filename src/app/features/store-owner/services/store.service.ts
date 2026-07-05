@@ -18,4 +18,8 @@ export class StoreService {
   updateStore(store: Partial<Store>) {
     return this.http.put(`${this.apiUrl}/me`, store);
   }
+
+  getDashboard() {
+    return this.http.get<any>('http://localhost:3000/api/stores/dashboard');
+  }
 }

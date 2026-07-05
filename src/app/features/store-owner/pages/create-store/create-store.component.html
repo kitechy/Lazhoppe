@@ -1,20 +1,32 @@
-<div class="p-8 bg-white">
-  <h1 class="text-3xl font-bold mb-6">Complete Store Setup</h1>
+<div class="flex justify-between items-center mb-8">
+  <div>
+    <h1 class="text-[#C8A97E] text-sm">MANAGE</h1>
+    <h2 class="text-white text-4xl font-bold">Store Location</h2>
+    <p class="text-gray-500 mt-2">
+      Set your pickup point and delivery radius. Drag the pin to fine-tune.
+    </p>
+  </div>
 
-  <google-map
-    [center]="center"
-    [zoom]="zoom"
-    height="600px"
-    width="100%"
-    (mapClick)="mapClicked($event)"
-  >
-    <map-marker *ngIf="markerPosition" [position]="markerPosition">
-    </map-marker>
-  </google-map>
   <button
     (click)="saveStore()"
-    class="mt-6 bg-[#C8A97E] text-black px-6 py-3 rounded-lg font-semibold hover:opacity-90"
+    class="bg-[#C8A97E] text-black px-5 py-3 rounded-lg font-semibold hover:opacity-90"
   >
+    <i class="fa-solid fa-check"></i>
     Save Location
   </button>
+</div>
+
+<div class="border">
+  <div>
+    <google-map
+      [center]="center"
+      [zoom]="zoom"
+      height="600px"
+      width="100%"
+      (mapClick)="mapClicked($event)"
+    >
+      <map-marker *ngIf="markerPosition" [position]="markerPosition">
+      </map-marker>
+    </google-map>
+  </div>
 </div>

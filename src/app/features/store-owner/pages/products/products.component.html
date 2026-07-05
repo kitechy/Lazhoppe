@@ -1,6 +1,6 @@
 <div class="flex justify-between items-center mb-8">
   <div>
-    <h1 class="text-[#C8A97E] text-sm">STORE</h1>
+    <h1 class="text-[#C8A97E] text-sm">MANAGE</h1>
     <h2 class="text-white text-4xl font-bold">Products</h2>
     <p class="text-gray-500 mt-2">
       Manage the products available in your store.
@@ -76,14 +76,22 @@
             (click)="editProduct(product)"
             class="text-[#C8A97E] hover:underline mr-4"
           >
-            Edit
+            <i class="fa-solid fa-pen-to-square"></i>
           </button>
 
           <button
             (click)="toggleProductStatus(product)"
             class="text-red-500 hover:underline"
           >
-            {{ product.isActive ? "Deactivate" : "Activate" }}
+            <i
+              class="fa-solid"
+              [ngClass]="
+                product.isActive
+                  ? 'fa-toggle-off text-red-500'
+                  : 'fa-toggle-on text-green-500'
+              "
+            >
+            </i>
           </button>
         </td>
       </tr>
