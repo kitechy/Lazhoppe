@@ -1,11 +1,13 @@
 const StoreApplication = require("../models/StoreApplication");
 const User = require("../models/User");
+const Store = require("../models/Store");
 
 // Submit application
 exports.submitApplication = async (req, res) => {
   try {
     const existing = await StoreApplication.findOne({
       user: req.user.id,
+      status: "pending",
     });
 
     if (existing) {
@@ -84,11 +86,41 @@ exports.approveApplication = async (req, res) => {
       });
     }
 
+    if (application.status === "approved") {
+      return res.status(400).json({
+        message: "Application has already been approved.",
+      });
+    }
+
+    if (application.status === "rejected") {
+      return res.status(400).json({
+        message: "Rejected applications cannot be approved.",
+      });
+    }
+
+    const existingStore = await Store.findOne({
+      owner: application.user,
+    });
+
+    if (existingStore) {
+      return res.status(400).json({
+        message: "This user already owns a store.",
+      });
+    }
+
     application.status = "approved";
     await application.save();
 
     await User.findByIdAndUpdate(application.user, {
       role: "store-owner",
+    });
+
+    await Store.create({
+      owner: application.user,
+      storeName: application.storeName,
+      description: application.description,
+      address: application.address,
+      phone: application.phone,
     });
 
     res.json({

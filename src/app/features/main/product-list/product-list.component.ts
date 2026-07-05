@@ -3,7 +3,7 @@ import { ShopService } from '../product/shop.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/models/product';
 import { CartService } from '../cart/cart.service';
-import { AuthService } from 'src/app/core/services/auth-service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-product-list',

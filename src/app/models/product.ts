@@ -1,8 +1,19 @@
 export interface Product {
   _id: string;
-  id: number;
+  store: string;
+
   name: string;
+  description: string;
+
   price: number;
-  imageUrl: string;
+  stock: number;
+
   category: string;
+
+  imageUrl: string;
+
+  isActive: boolean;
+
+  createdAt: string;
+  updatedAt: string;
 }

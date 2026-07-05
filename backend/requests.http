@@ -1,6 +1,6 @@
 @Ctoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDVjNzM4ZDFlM2FhNGNhNzg4NTVmYyIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MzE3NDMxNCwiZXhwIjoxNzgzMjYwNzE0fQ.7v0adflaqqVYSVHxVrrdEkBZ_-knHdXC9yCaCGtOnDM
 
-@Otoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM5YmI5NGFkMWU0YjM3ZDM3ZDZjOCIsInJvbGUiOiJzdG9yZV9vd25lciIsImlhdCI6MTc4MjgxNjEwOCwiZXhwIjoxNzgyOTAyNTA4fQ.4Qk8ONy93-uJ9NqIRk3_wtzvJ66qAL461pTFaugKFbg
+@Otoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDVjNzM4ZDFlM2FhNGNhNzg4NTVmYyIsInJvbGUiOiJzdG9yZS1vd25lciIsImlhdCI6MTc4MzI0NDIzMiwiZXhwIjoxNzgzMzMwNjMyfQ.Ta562QPtw25DgfnZill1JDM-mVy70InvK69Zx0WB83Q
 
 @Atoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM4OTkwNTlhOTZkZGIyMzMzYTM5NSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4MzE3NDA1NSwiZXhwIjoxNzgzMjYwNDU1fQ.22ZJvkrhPFVQkPXDb4a4Mzb9kYdt85h-p3QNJgJcYpQ
 ### Register Customer
@@ -114,3 +114,50 @@ Authorization: Bearer {{Atoken}}
 
 GET http://localhost:3000/api/users
 Authorization: Bearer {{Atoken}}
+
+### Testing Dashboard Analytics 
+
+GET http://localhost:3000/api/admin/dashboard
+Authorization: Bearer {{Atoken}}
+
+### Testing Creating Store
+
+POST http://localhost:3000/api/stores
+Authorization: Bearer {{Otoken}}
+Content-Type: application/json
+
+{
+    "storeName":"Kevin's Coffee",
+    "description":"The best coffee in town",
+    "address":"Manila, Philippines",
+    "latitude":14.5995,
+    "longitude":120.9842,
+    "phone":"09123456789"
+}
+
+### Testing Getting Store
+
+GET http://localhost:3000/api/stores/me
+Authorization: Bearer {{Otoken}}
+
+### Testing Posting Product
+
+POST http://localhost:3000/api/products
+Authorization: Bearer {{Otoken}}
+Content-Type: application/json
+
+{
+  "name": "Espresso",
+  "description": "Fresh brewed coffee",
+  "price": 120,
+  "stock": 30,
+  "category": "Coffee",
+  "imageUrl": ""
+}
+
+### Testing Image Upload
+
+POST http://localhost:3000/api/products/upload
+Authorization: Bearer {{Otoken}}
+
+

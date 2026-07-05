@@ -5,3 +5,105 @@
     Here's what's moving across Rvsd today.
   </p>
 </div>
+
+<!-- Statistics -->
+<div class="grid grid-cols-4 gap-6 mt-10">
+  <!-- Total Users -->
+  <div class="bg-[#111111] border border-[#2E2E2E] rounded-2xl p-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-gray-400 text-sm">Total Users</p>
+        <h2 class="text-4xl font-bold text-white mt-2">
+          {{ stats?.totalUsers || 0 }}
+        </h2>
+      </div>
+
+      <div
+        class="w-14 h-14 rounded-xl bg-[#C8A97E]/20 flex items-center justify-center"
+      >
+        <i class="fa-solid fa-users text-[#C8A97E] text-xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Store Owners -->
+  <div class="bg-[#111111] border border-[#2E2E2E] rounded-2xl p-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-gray-400 text-sm">Store Owners</p>
+        <h2 class="text-4xl font-bold text-white mt-2">
+          {{ stats?.storeOwners || 0 }}
+        </h2>
+      </div>
+
+      <div
+        class="w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center"
+      >
+        <i class="fa-solid fa-store text-green-400 text-xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <div class="bg-[#111111] border border-[#2E2E2E] rounded-2xl p-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-gray-400 text-sm">Products</p>
+        <h2 class="text-4xl font-bold text-white mt-2">
+          {{ stats?.products || 0 }}
+        </h2>
+      </div>
+
+      <div
+        class="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center"
+      >
+        <i class="fa-solid fa-box text-blue-400 text-xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Applications -->
+  <div class="bg-[#111111] border border-[#2E2E2E] rounded-2xl p-6">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-gray-400 text-sm">Pending Applications</p>
+        <h2 class="text-4xl font-bold text-white mt-2">
+          {{ stats?.pendingApplications || 0 }}
+        </h2>
+      </div>
+
+      <div
+        class="w-14 h-14 rounded-xl bg-yellow-500/20 flex items-center justify-center"
+      >
+        <i class="fa-solid fa-file-lines text-yellow-400 text-xl"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Second Row -->
+<div class="grid grid-cols-3 gap-6 mt-6">
+  <div class="bg-[#111111] border border-[#2E2E2E] rounded-2xl p-6">
+    <p class="text-gray-400 text-sm">Customers</p>
+
+    <h2 class="text-3xl font-bold text-white mt-2">
+      {{ stats?.customers || 0 }}
+    </h2>
+  </div>
+
+  <div class="bg-[#111111] border border-[#2E2E2E] rounded-2xl p-6">
+    <p class="text-gray-400 text-sm">Active Accounts</p>
+
+    <h2 class="text-3xl font-bold text-green-400 mt-2">
+      {{ stats?.activeAccounts || 0 }}
+    </h2>
+  </div>
+
+  <div class="bg-[#111111] border border-[#2E2E2E] rounded-2xl p-6">
+    <p class="text-gray-400 text-sm">Inactive Accounts</p>
+
+    <h2 class="text-3xl font-bold text-red-400 mt-2">
+      {{ stats?.inactiveAccounts || 0 }}
+    </h2>
+  </div>
+</div>

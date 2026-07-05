@@ -14,4 +14,10 @@ export class UserService {
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
   }
+
+  updateStatus(id: string, isActive: boolean) {
+    return this.http.patch(`${this.apiUrl}/${id}/status`, {
+      isActive,
+    });
+  }
 }

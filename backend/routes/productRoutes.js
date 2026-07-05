@@ -1,49 +1,35 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const upload = require("../middleware/uploadProductImage");
 
-const Product = require("../models/Product");
+const authenticate = require("../middleware/authMiddleware");
+const productController = require("../controllers/productController");
 
-router.get("/", async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.json(products);
-    } catch (e) {
-        res.status(500).json({
-            message: error.message,
-        });
-    }
-});
+// Customer Routes
+router.get("/", productController.getProducts);
 
-router.get("/:id", async (req, res) => {
-    try {
-        const product = await Product.findOne({
-            id: Number(req.params.id),
-        });
+router.get("/mine", authenticate, productController.getMyProducts);
 
-        if(!product) {
-            return res.status(404).json({
-                message: "Product not found",
-            });
-        }
+router.get("/category/:category", productController.getProductsByCategory);
 
-        res.json(product);
-    } catch (e) {
-        res.status(500).json({
-            message: error.message,
-        });
-    }
-});
+router.get("/:id", productController.getProductById);
 
-router.get("/category/:category", async (req, res) => {
-    try {
-        const products = await Product.find({
-            category: req.params.category,
-        });
-    } catch(e) {
-        res.status(500).json({
-            message: e.message,
-        });
-    }
-});
+// Store Owner Routes
+router.post("/", authenticate, productController.createProduct);
+
+router.post(
+  "/upload",
+  authenticate,
+  upload.single("image"),
+  productController.uploadImage,
+);
+
+router.put("/:id", authenticate, productController.updateProduct);
+
+router.patch(
+  "/:id/toggle-status",
+  authenticate,
+  productController.toggleProductStatus,
+);
 
 module.exports = router;

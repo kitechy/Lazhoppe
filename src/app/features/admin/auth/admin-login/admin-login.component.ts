@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth-service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -31,7 +31,7 @@ export class AdminLoginComponent {
 
           this.authService.saveSession(res.token, res.user);
 
-          this.router.navigate(['/admin']);
+          this.router.navigate(['/admin/dashboard']);
         },
 
         error: () => {

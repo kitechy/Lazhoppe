@@ -25,6 +25,7 @@
         <th class="px-6 py-4">User</th>
         <th class="px-6 py-4">Role</th>
         <th class="px-6 py-4">Joined</th>
+        <th class="px-6 py-4">Status</th>
         <th class="px-6 py-4 text-center">Actions</th>
       </tr>
     </thead>
@@ -50,13 +51,6 @@
         <!-- Role -->
         <td class="px-6 py-5">
           <span
-            *ngIf="user.role === 'admin'"
-            class="rounded-full bg-red-500/20 text-red-400 px-3 py-1 text-sm"
-          >
-            Admin
-          </span>
-
-          <span
             *ngIf="user.role === 'store-owner'"
             class="rounded-full bg-green-500/20 text-green-400 px-3 py-1 text-sm"
           >
@@ -76,10 +70,28 @@
           {{ user.createdAt | date: "mediumDate" }}
         </td>
 
+        <!-- Status -->
+        <td class="px-6 py-5">
+          <span
+            *ngIf="user.isActive"
+            class="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-400"
+          >
+            Active
+          </span>
+
+          <span
+            *ngIf="!user.isActive"
+            class="rounded-full bg-red-500/20 px-3 py-1 text-sm text-red-400"
+          >
+            Inactive
+          </span>
+        </td>
+
         <!-- Actions -->
         <td class="px-6 py-5">
           <div class="flex justify-center gap-3">
             <button
+              (click)="viewUser(user)"
               class="rounded-lg bg-[#C8A97E] px-4 py-2 text-black hover:opacity-90"
             >
               View
@@ -96,4 +108,132 @@
       </tr>
     </tbody>
   </table>
+
+  <!-- User Modal -->
+  <div
+    *ngIf="showModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+    (click)="closeModal()"
+  >
+    <div
+      class="flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-[#2E2E2E] bg-[#111111] shadow-2xl"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Header -->
+      <div
+        class="flex items-center justify-between border-b border-[#2E2E2E] p-6"
+      >
+        <div>
+          <h2 class="text-2xl font-bold text-white">User Details</h2>
+
+          <p class="text-[#C8A97E]">Manage account information</p>
+        </div>
+
+        <button
+          (click)="closeModal()"
+          class="text-2xl text-gray-400 hover:text-white"
+        >
+          &times;
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div
+        *ngIf="selectedUser"
+        class="flex-1 space-y-6 overflow-y-auto p-6 text-white"
+      >
+        <div>
+          <label class="text-sm text-gray-400"> Full Name </label>
+
+          <p class="text-lg font-semibold">
+            {{ selectedUser.firstName }}
+            {{ selectedUser.lastName }}
+          </p>
+        </div>
+
+        <div>
+          <label class="text-sm text-gray-400"> Email </label>
+
+          <p>
+            {{ selectedUser.email }}
+          </p>
+        </div>
+
+        <div>
+          <label class="text-sm text-gray-400"> Role </label>
+
+          <div class="mt-2">
+            <span
+              *ngIf="selectedUser.role === 'customer'"
+              class="rounded-full bg-blue-500/20 px-3 py-1 text-blue-400"
+            >
+              Customer
+            </span>
+
+            <span
+              *ngIf="selectedUser.role === 'store-owner'"
+              class="rounded-full bg-green-500/20 px-3 py-1 text-green-400"
+            >
+              Store Owner
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-sm text-gray-400"> Account Status </label>
+
+          <div class="mt-2">
+            <span
+              *ngIf="selectedUser.isActive"
+              class="rounded-full bg-green-500/20 px-3 py-1 text-green-400"
+            >
+              Active
+            </span>
+
+            <span
+              *ngIf="!selectedUser.isActive"
+              J
+              class="rounded-full bg-red-500/20 px-3 py-1 text-red-400"
+            >
+              Inactive
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="selectedUser.createdAt">
+          <label class="text-sm text-gray-400"> Joined </label>
+
+          <p>
+            {{ selectedUser.createdAt | date: "fullDate" }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="flex justify-end gap-3 border-t border-[#2E2E2E] bg-[#111111] p-6"
+      >
+        <button
+          (click)="closeModal()"
+          class="rounded-lg border border-gray-600 px-5 py-2 text-white hover:bg-[#1A1A1A]"
+        >
+          Close
+        </button>
+
+        <button
+          (click)="toggleStatus(selectedUser!)"
+          class="rounded-lg px-5 py-2 text-white"
+          [ngClass]="
+            selectedUser?.isActive
+              ? 'bg-red-600 hover:bg-red-700'
+              : 'bg-green-600 hover:bg-green-700'
+          "
+        >
+          {{
+            selectedUser?.isActive ? "Deactivate Account" : "Activate Account"
+          }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

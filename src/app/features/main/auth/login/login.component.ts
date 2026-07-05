@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth-service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { AuthComponent } from '../auth/auth.component';
 
 @Component({
@@ -29,9 +29,10 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.getRawValue()).subscribe({
       next: (response) => {
-        this.authService.saveToken(response.token);
-        this.authService.saveUser(response.user);
+        this.authService.saveSession(response.token, response.user);
+
         alert('Login successful!');
+
         this.authService.getProfile().subscribe({
           next: (profile) => {
             console.log('Profile:', profile);
@@ -40,7 +41,20 @@ export class LoginComponent {
             console.error(err);
           },
         });
-        this.router.navigate(['/shop']);
+
+        switch (response.user.role) {
+          case 'admin':
+            this.router.navigate(['/admin/dashboard']);
+            break;
+
+          case 'store-owner':
+            this.router.navigate(['/store-owner/setup-store']);
+            break;
+
+          default:
+            this.router.navigate(['/shop']);
+            break;
+        }
       },
       error: (err) => {
         alert(err.error.message);
