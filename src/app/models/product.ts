@@ -1,6 +1,8 @@
+import { Store } from './store';
+
 export interface Product {
   _id: string;
-  store: string;
+  store: string | Store;
 
   name: string;
   description: string;

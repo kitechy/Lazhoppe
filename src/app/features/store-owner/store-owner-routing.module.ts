@@ -29,6 +29,13 @@ const routes: Routes = [
         path: 'products',
         component: ProductsComponent,
       },
+      {
+        path: 'messages',
+        loadChildren: () =>
+          import('../../features/messages/messages.module').then(
+            (m) => m.MessagesModule,
+          ),
+      },
     ],
   },
 ];

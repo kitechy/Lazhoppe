@@ -27,7 +27,7 @@ router.get(
   }
 );
 
-router.get(
+router.get( 
   "/store-owner",
   authenticate,
   authorize("store_owner"),

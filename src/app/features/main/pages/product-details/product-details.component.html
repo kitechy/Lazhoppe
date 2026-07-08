@@ -1,0 +1,303 @@
+<div class="min-h-screen" *ngIf="!loading">
+  <div class="max-w-4xl mx-auto p-8">
+    <!-- Error State -->
+    <div
+      *ngIf="error"
+      class="mb-8 p-6 bg-red-100 border border-red-400 text-red-700 rounded-lg"
+    >
+      <p class="mb-4">{{ error }}</p>
+      <button
+        (click)="goBack()"
+        class="px-4 py-2 bg-dark text-light rounded-lg hover:opacity-90 transition"
+      >
+        Back to Shop
+      </button>
+    </div>
+
+    <!-- Product Details -->
+    <div *ngIf="product">
+      <!-- Header -->
+      <div class="mb-8">
+        <button
+          (click)="goBack()"
+          class="mb-4 text-primary hover:underline transition flex items-center gap-2"
+        >
+          <i class="fa-solid fa-arrow-left"></i>
+          Back
+        </button>
+        <h1 class="text-4xl font-bold text-light">{{ product.name }}</h1>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+        <!-- Product Image -->
+        <div
+          class="flex items-center justify-center bg-white border-2 border-gray-200 rounded-lg overflow-hidden h-96"
+        >
+          <img
+            *ngIf="product.imageUrl"
+            [src]="getImageUrl(product.imageUrl)"
+            [alt]="product.name"
+            class="w-full h-full object-contain"
+          />
+          <div *ngIf="!product.imageUrl" class="text-gray-400 text-center p-8">
+            No Image Available
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="flex flex-col gap-6">
+          <!-- Price and Stock -->
+          <div class="flex items-center gap-4">
+            <span class="text-5xl font-bold text-primary"
+              >&#8369; {{ product.price | number: "1.2-2" }}</span
+            >
+            <span
+              class="px-4 py-2 rounded-lg font-semibold text-sm"
+              [ngClass]="{
+                'bg-green-100 text-green-700': product.stock > 5,
+                'bg-yellow-100 text-yellow-700':
+                  product.stock > 0 && product.stock <= 5,
+                'bg-red-100 text-red-700': product.stock === 0,
+              }"
+            >
+              {{
+                product.stock === 0
+                  ? "Out of Stock"
+                  : product.stock + " in stock"
+              }}
+            </span>
+          </div>
+
+          <!-- Category -->
+          <p class="text-[#2E2E2E] text-sm">
+            Category: <strong class="text-light">{{ product.category }}</strong>
+          </p>
+
+          <!-- Description -->
+          <div class="border-t-2 border-gray-200 pt-6">
+            <h3 class="text-xl font-bold text-[#2E2E2E] mb-3">Description</h3>
+            <p class="text-light leading-relaxed text-sm">
+              {{ product.description }}
+            </p>
+          </div>
+
+          <!-- Quantity and Add to Cart -->
+          <div class="flex flex-col sm:flex-row gap-4 items-center pt-4">
+            <div class="flex items-center gap-3">
+              <label class="font-semibold text-[#2E2E2E]">Quantity:</label>
+              <input
+                type="number"
+                [(ngModel)]="quantity"
+                min="1"
+                [max]="product.stock"
+                [disabled]="product.stock === 0"
+                class="w-20 px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-primary focus:outline-none disabled:bg-gray-100"
+              />
+            </div>
+            <button
+              (click)="addToCart()"
+              [disabled]="product.stock === 0"
+              class="flex-1 sm:flex-none px-8 py-3 bg-primary text-light font-semibold rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-cart-shopping"></i>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Store Information -->
+      <div
+        *ngIf="store && (store.storeName || store.address)"
+        class="bg-white border-2 border-gray-200 rounded-lg overflow-hidden mb-8"
+      >
+        <!-- Store Banner -->
+        <div
+          *ngIf="store.banner"
+          class="h-48 overflow-hidden bg-gradient-to-r from-primary to-dark"
+        >
+          <img
+            [src]="getStoreLogoUrl(store.banner)"
+            [alt]="store.storeName + ' banner'"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <!-- Store Details -->
+        <div class="p-8">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Store Header with Logo -->
+            <div class="lg:col-span-1">
+              <div class="flex flex-col items-center text-center">
+                <div
+                  class="w-32 h-32 rounded-full border-4 border-primary overflow-hidden mb-4 bg-gray-100 flex items-center justify-center shadow-lg"
+                >
+                  <img
+                    *ngIf="store.logo"
+                    [src]="getStoreLogoUrl(store.logo)"
+                    [alt]="store.storeName"
+                    class="w-full h-full object-cover"
+                  />
+                  <div *ngIf="!store.logo" class="text-5xl text-gray-400">
+                    <i class="fa-solid fa-store"></i>
+                  </div>
+                </div>
+                <h3 class="text-2xl font-bold text-dark mb-2">
+                  {{ store.storeName }}
+                </h3>
+                <span
+                  class="px-3 py-1 rounded-full text-xs font-semibold"
+                  [ngClass]="
+                    store.isActive
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-gray-100 text-gray-600'
+                  "
+                >
+                  {{ store.isActive ? "✓ Active" : "Inactive" }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Store Info -->
+            <div class="lg:col-span-2">
+              <div class="space-y-6">
+                <!-- Contact Information -->
+                <div class="border-b pb-4 flex justify-around items-center">
+                  <div class="flex flex-col">
+                    <div>
+                      <h4
+                        class="text-sm font-bold text-dark uppercase tracking-widest mb-3"
+                      >
+                        📞 Contact Information
+                      </h4>
+                    </div>
+
+                    <div class="space-y-3">
+                      <p class="flex items-start gap-3 text-gray-600">
+                        <i
+                          class="fa-solid fa-map-pin text-primary mt-1 flex-shrink-0 text-lg"
+                        ></i>
+                        <span class="pt-0.5">{{ store.address }}</span>
+                      </p>
+                      <p class="flex items-start gap-3 text-gray-600">
+                        <i
+                          class="fa-solid fa-phone text-primary mt-1 flex-shrink-0 text-lg"
+                        ></i>
+                        <span class="pt-0.5">{{ store.phone }}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="p-4 bg-[#C8A97E] text-light rounded-2xl flex items-center gap-2 cursor-pointer"
+                    (click)="messageStore()"
+                  >
+                    <i class="fa-solid fa-message"></i>
+                    <p>Message</p>
+                  </div>
+                </div>
+
+                <!-- Description -->
+                <div *ngIf="store.description">
+                  <h4
+                    class="text-sm font-bold text-dark uppercase tracking-widest mb-3"
+                  >
+                    📝 About Store
+                  </h4>
+                  <p class="text-gray-600 leading-relaxed">
+                    {{ store.description }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Store Location Map -->
+          <div class="mt-8 pt-8 border-t border-gray-200 -mx-8 px-8 pb-8">
+            <h4
+              class="text-sm font-bold text-dark uppercase tracking-widest mb-4"
+            >
+              📍 Store Location
+            </h4>
+            <div
+              class="rounded-lg overflow-hidden border-2 border-gray-200 h-80 shadow-md"
+            >
+              <google-map
+                *ngIf="store.latitude && store.longitude"
+                width="100%"
+                height="100%"
+                [center]="center"
+                [zoom]="16"
+                [options]="{
+                  mapTypeControl: true,
+                  streetViewControl: true,
+                  fullscreenControl: true,
+                  zoomControl: true,
+                  disableDefaultUI: false,
+                }"
+              >
+                <map-marker
+                  [position]="center"
+                  [title]="'Store: ' + store.storeName"
+                ></map-marker>
+              </google-map>
+              <div
+                *ngIf="!store.latitude || !store.longitude"
+                class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500"
+              >
+                <div class="text-center">
+                  <i class="fa-solid fa-map text-5xl mb-4 text-gray-400"></i>
+                  <p class="text-sm font-semibold">
+                    Store location not available
+                  </p>
+                  <p class="text-xs text-gray-400 mt-2">
+                    Check back later for location details
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Store Information Missing -->
+      <div
+        *ngIf="!store || (!store.storeName && !store.address)"
+        class="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-6 mb-8"
+      >
+        <div class="flex items-center gap-3 text-yellow-800">
+          <i class="fa-solid fa-exclamation-triangle text-xl"></i>
+          <div>
+            <p class="font-semibold">Store information unavailable</p>
+            <p class="text-sm">
+              This product's store details are not yet available.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div
+    *ngIf="showToast"
+    class="fixed bottom-6 right-6 px-6 py-4 bg-dark text-light rounded-lg shadow-lg animate-pulse"
+  >
+    {{ toastMessage }}
+  </div>
+</div>
+
+<!-- Loading State -->
+<div
+  *ngIf="loading"
+  class="flex items-center justify-center min-h-screen bg-light"
+>
+  <div class="text-center">
+    <div class="mb-4 inline-block">
+      <div
+        class="h-12 w-12 border-4 border-primary border-t-light rounded-full animate-spin"
+      ></div>
+    </div>
+    <p class="text-gray-600 text-lg">Loading product details...</p>
+  </div>
+</div>

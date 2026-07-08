@@ -12,8 +12,12 @@ export class ProductsComponent implements OnInit {
   editingProduct = false;
   showAddModal = false;
   loading = false;
+  uploadingImage = false;
 
   selectedProductId = '';
+  selectedImage: File | null = null;
+  imagePreviewUrl: string | null = null;
+  backendUrl = 'http://localhost:3000';
 
   newProduct = {
     name: '',
@@ -49,6 +53,8 @@ export class ProductsComponent implements OnInit {
 
   closeAddModal() {
     this.showAddModal = false;
+    this.selectedImage = null;
+    this.imagePreviewUrl = null;
 
     this.newProduct = {
       name: '',
@@ -60,44 +66,53 @@ export class ProductsComponent implements OnInit {
     };
   }
 
-  saveProduct() {
-    if (this.editingProduct) {
-      this.productService
-        .updateProduct(this.selectedProductId, this.newProduct)
-        .subscribe({
-          next: () => {
-            alert('Product updated successfully.');
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
 
-            this.closeAddModal();
-            this.loadProducts();
-          },
-          error: (err) => {
-            console.error(err);
-            alert(err.error.message);
-          },
-        });
+    if (!input.files || input.files.length === 0) {
+      this.selectedImage = null;
+      this.imagePreviewUrl = null;
+      return;
+    }
+
+    this.selectedImage = input.files[0];
+    this.imagePreviewUrl = URL.createObjectURL(this.selectedImage);
+  }
+
+  saveProduct() {
+    if (this.selectedImage) {
+      this.uploadingImage = true;
+
+      this.productService.uploadImage(this.selectedImage).subscribe({
+        next: (response) => {
+          this.newProduct.imageUrl = response.imageUrl;
+
+          this.saveProductToDatabase();
+        },
+
+        error: (err) => {
+          console.error(err);
+
+          this.uploadingImage = false;
+
+          alert('Image upload failed.');
+        },
+      });
 
       return;
     }
 
-    this.productService.createProduct(this.newProduct).subscribe({
-      next: () => {
-        alert('Product added successfully.');
-
-        this.closeAddModal();
-        this.loadProducts();
-      },
-      error: (err) => {
-        console.error(err);
-        alert(err.error.message);
-      },
-    });
+    this.saveProductToDatabase();
   }
 
   editProduct(product: Product) {
     this.editingProduct = true;
 
     this.selectedProductId = product._id;
+    this.selectedImage = null;
+    this.imagePreviewUrl = product.imageUrl
+      ? this.getImageUrl(product.imageUrl)
+      : null;
 
     this.newProduct = {
       name: product.name,
@@ -109,6 +124,67 @@ export class ProductsComponent implements OnInit {
     };
 
     this.showAddModal = true;
+  }
+
+  saveProductToDatabase() {
+    if (this.editingProduct) {
+      this.productService
+        .updateProduct(this.selectedProductId, this.newProduct)
+        .subscribe({
+          next: () => {
+            this.uploadingImage = false;
+            this.selectedImage = null;
+            this.imagePreviewUrl = null;
+
+            alert('Product updated successfully.');
+
+            this.closeAddModal();
+
+            this.loadProducts();
+          },
+
+          error: (err) => {
+            console.error(err);
+
+            this.uploadingImage = false;
+
+            alert(err.error.message);
+          },
+        });
+
+      return;
+    }
+
+    this.productService.createProduct(this.newProduct).subscribe({
+      next: () => {
+        this.uploadingImage = false;
+        this.selectedImage = null;
+        this.imagePreviewUrl = null;
+        this.closeAddModal();
+
+        this.loadProducts();
+      },
+
+      error: (err) => {
+        console.error(err);
+
+        this.uploadingImage = false;
+
+        alert(err.error.message);
+      },
+    });
+  }
+
+  getImageUrl(imageUrl: string | null | undefined): string {
+    if (!imageUrl) {
+      return 'assets/no-image.png';
+    }
+
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+
+    return `${this.backendUrl}${imageUrl}`;
   }
 
   loadProducts() {

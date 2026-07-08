@@ -11,7 +11,7 @@ const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const productRoutes = require("./routes/productRoutes");
-const path = require("path");
+const messageRoutes = require("./routes/messageRoutes");
 
 const app = express();
 
@@ -20,6 +20,7 @@ connectDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
+const path = require("path");
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
@@ -28,6 +29,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/messages", messageRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running!");

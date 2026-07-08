@@ -19,6 +19,13 @@ const routes: Routes = [
         (m) => m.StoreOwnerModule,
       ),
   },
+  {
+    path: 'messages',
+    loadChildren: () =>
+      import('./features/messages/messages.module').then(
+        (m) => m.MessagesModule,
+      ),
+  },
 ];
 
 @NgModule({

@@ -17,7 +17,7 @@
               class="w-[150px] h-[150px] overflow-hidden rounded-lg bg-[#F8F4EE]"
             >
               <img
-                [src]="item.product.imageUrl"
+                [src]="getImageUrl(item.product.imageUrl)"
                 [alt]="item.product.name"
                 class="w-full h-full object-cover"
               />

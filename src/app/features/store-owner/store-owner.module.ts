@@ -10,6 +10,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { StoreOwnerLayoutComponent } from './layout/store-owner-layout/store-owner-layout.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { FormsModule } from '@angular/forms';
+import { MessagesModule } from '../messages/messages.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { FormsModule } from '@angular/forms';
     StoreOwnerRoutingModule,
     GoogleMapsModule,
     FormsModule,
+    MessagesModule,
   ],
 })
 export class StoreOwnerModule {}

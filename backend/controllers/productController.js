@@ -22,7 +22,7 @@ exports.getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate(
       "store",
-      "storeName",
+      "storeName address phone description latitude longitude logo banner isActive",
     );
 
     if (!product) {
@@ -33,6 +33,7 @@ exports.getProductById = async (req, res) => {
 
     res.json(product);
   } catch (e) {
+    console.error("[ERROR] getProductById failed:", e);
     res.status(500).json({
       message: e.message,
     });

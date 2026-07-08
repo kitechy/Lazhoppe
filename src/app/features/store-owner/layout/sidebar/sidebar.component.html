@@ -5,7 +5,7 @@
     <div
       class="p-2 rounded-xl flex gap-2 items-center transition-colors"
       [ngClass]="
-        isActive('/admin/dashboard')
+        isActive('/store-owner/dashboard')
           ? 'bg-[#C8A97E] text-[#2E2E2E]'
           : 'text-white'
       "
@@ -19,7 +19,21 @@
     <div
       class="p-2 rounded-xl flex gap-2 items-center transition-colors"
       [ngClass]="
-        isActive('/admin/users') ? 'bg-[#C8A97E] text-[#2E2E2E]' : 'text-white'
+        isActive('/store-owner/messages')
+          ? 'bg-[#C8A97E] text-[#2E2E2E]'
+          : 'text-white'
+      "
+    >
+      <i class="fa-solid fa-message"></i>
+      <a routerLink="/store-owner/messages" class="w-full">Messages</a>
+    </div>
+
+    <div
+      class="p-2 rounded-xl flex gap-2 items-center transition-colors"
+      [ngClass]="
+        isActive('/store-owner/products')
+          ? 'bg-[#C8A97E] text-[#2E2E2E]'
+          : 'text-white'
       "
     >
       <i class="fa-solid fa-box"></i>
@@ -29,7 +43,7 @@
     <div
       class="p-2 rounded-xl flex gap-2 items-center transition-colors"
       [ngClass]="
-        isActive('/admin/applications')
+        isActive('/store-owner/setup-store')
           ? 'bg-[#C8A97E] text-[#2E2E2E]'
           : 'text-white'
       "

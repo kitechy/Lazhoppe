@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Product } from 'src/app/models/product';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -45,7 +44,7 @@ export class ShopService {
     return throwError(() => new Error(message));
   }
 
-  getProduct(id: number): Observable<Product> {
+  getProduct(id: string | number): Observable<Product> {
     return this.http
       .get<Product>(`${this.apiUrl}/${id}`)
       .pipe(

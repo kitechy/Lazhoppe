@@ -1,6 +1,6 @@
-@Ctoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDVjNzM4ZDFlM2FhNGNhNzg4NTVmYyIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MzE3NDMxNCwiZXhwIjoxNzgzMjYwNzE0fQ.7v0adflaqqVYSVHxVrrdEkBZ_-knHdXC9yCaCGtOnDM
+@Ctoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDRiNmRiNzI1ZjFmNDMzNjNiMzY1MiIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc4MzMxOTQwNCwiZXhwIjoxNzgzNDA1ODA0fQ.m7olVPGiTCosulp_bAQj4xGnOr9y9ipsTSJbiqlYBCk
 
-@Otoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDVjNzM4ZDFlM2FhNGNhNzg4NTVmYyIsInJvbGUiOiJzdG9yZS1vd25lciIsImlhdCI6MTc4MzI0NDIzMiwiZXhwIjoxNzgzMzMwNjMyfQ.Ta562QPtw25DgfnZill1JDM-mVy70InvK69Zx0WB83Q
+@Otoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDVjNzM4ZDFlM2FhNGNhNzg4NTVmYyIsInJvbGUiOiJzdG9yZS1vd25lciIsImlhdCI6MTc4MzMxOTU0MCwiZXhwIjoxNzgzNDA1OTQwfQ.ElnLDX3Ooy5S3e6ig70LWd2CpK2DcZsbY1ZcBTe53rs
 
 @Atoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNDM4OTkwNTlhOTZkZGIyMzMzYTM5NSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4MzE3NDA1NSwiZXhwIjoxNzgzMjYwNDU1fQ.22ZJvkrhPFVQkPXDb4a4Mzb9kYdt85h-p3QNJgJcYpQ
 ### Register Customer
@@ -155,6 +155,38 @@ Content-Type: application/json
   "imageUrl": ""
 }
 
+### Testing Starting a Conversation
+
+POST http://localhost:3000/api/messages/start
+Authorization: Bearer {{Ctoken}}
+Content-Type: application/json
+
+{
+    "storeId": "6a4a269eb43739a3660ef720"
+}
 
 
+### Testing Loading Conversation (Customer-Side)
 
+GET http://localhost:3000/api/messages/conversations
+Authorization: Bearer {{Ctoken}}
+
+### Testing Loading Conversation (Store-Owner Side)
+
+GET http://localhost:3000/api/messages/conversations
+Authorization: Bearer {{Otoken}}
+
+### Testing Sending a Message
+
+POST http://localhost:3000/api/messages/6a4b4b816b66b0732fb5043b
+Authorization: Bearer {{Ctoken}}
+Content-Type: application/json
+
+{
+    "text": "Hello! Is this item still available?"
+}
+
+### Testing Loading Messages 
+
+GET http://localhost:3000/api/messages/6a4b4b816b66b0732fb5043b
+Authorization: Bearer {{Ctoken}}

@@ -48,7 +48,7 @@ export class LoginComponent {
             break;
 
           case 'store-owner':
-            this.router.navigate(['/store-owner/setup-store']);
+            this.router.navigate(['/store-owner/dashboard']);
             break;
 
           default:

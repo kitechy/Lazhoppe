@@ -21,6 +21,13 @@
       <i class="fa-solid fa-shop"></i>
       <a>SHOP</a>
     </div>
+    <div
+      class="text-[#2E2E2E] transition duration-500 ease-in cursor-pointer hover:text-white flex gap-2 items-center"
+      routerLink="/messages"
+    >
+      <i class="fa-solid fa-message"></i>
+      <a>CHAT</a>
+    </div>
 
     <!-- Not Logged In -->
     <ng-container *ngIf="!authService.isLoggedIn(); else loggedInMenu">

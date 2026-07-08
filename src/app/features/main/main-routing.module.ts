@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { HomeComponent } from './home/home.component';
-import { ProductListComponent } from './product-list/product-list.component';
 import { CartComponent } from './cart/cart.component';
 import { AuthComponent } from './auth/auth/auth.component';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { ApplyStoreComponent } from './store-owner/apply-store/apply-store.component';
+import { ProductDetailsComponent } from './pages/product-details/product-details.component';
+import { ProductListComponent } from './pages/product-list/product-list.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,18 @@ const routes: Routes = [
       {
         path: 'apply-store',
         component: ApplyStoreComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'product/:id',
+        component: ProductDetailsComponent,
+      },
+      {
+        path: 'messages',
+        loadChildren: () =>
+          import('../../features/messages/messages.module').then(
+            (m) => m.MessagesModule,
+          ),
         canActivate: [AuthGuard],
       },
     ],

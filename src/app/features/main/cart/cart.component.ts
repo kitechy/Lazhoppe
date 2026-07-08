@@ -49,6 +49,18 @@ export class CartComponent implements OnInit {
       .subscribe(() => this.loadCart());
   }
 
+  getImageUrl(imageUrl: string | null | undefined): string {
+    if (!imageUrl) {
+      return 'assets/no-image.png';
+    }
+
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+
+    return `http://localhost:3000${imageUrl}`;
+  }
+
   decreaseQuantity(item: CartItem): void {
     const quantity = item.quantity - 1;
 

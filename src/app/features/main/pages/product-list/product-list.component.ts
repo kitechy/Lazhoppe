@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ShopService } from '../product/shop.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ShopService } from '../../product/shop.service';
 import { Product } from 'src/app/models/product';
-import { CartService } from '../cart/cart.service';
+import { CartService } from '../../cart/cart.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -16,6 +16,7 @@ export class ProductListComponent implements OnInit {
   errorMessage = '';
   productsPerCategory = 5;
   selectedCategory: string | null = null;
+  backendUrl = 'http://localhost:3000';
 
   constructor(
     private shopService: ShopService,
@@ -24,6 +25,18 @@ export class ProductListComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
   ) {}
+
+  getImageUrl(imageUrl: string | null | undefined): string {
+    if (!imageUrl) {
+      return 'assets/no-image.png';
+    }
+
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+
+    return `${this.backendUrl}${imageUrl}`;
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {

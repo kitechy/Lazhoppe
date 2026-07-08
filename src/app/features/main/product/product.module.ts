@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ProductListComponent } from '../product-list/product-list.component';
+import { ProductListComponent } from '../pages/product-list/product-list.component';
 
 @NgModule({
   declarations: [ProductListComponent],

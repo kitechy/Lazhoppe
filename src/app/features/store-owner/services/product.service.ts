@@ -26,4 +26,12 @@ export class ProductService {
   toggleStatus(id: string) {
     return this.http.patch(`${this.apiUrl}/${id}/toggle-status`, {});
   }
+
+  uploadImage(file: File) {
+    const formData = new FormData();
+
+    formData.append('image', file);
+
+    return this.http.post<any>(`${this.apiUrl}/upload`, formData);
+  }
 }
