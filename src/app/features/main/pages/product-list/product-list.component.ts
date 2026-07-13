@@ -59,15 +59,18 @@ export class ProductListComponent implements OnInit {
   }
 
   get displayedProducts(): Product[] {
-    let result = this.products.slice();
+    let result = [...this.products];
 
     if (this.searchTerm) {
       const q = this.searchTerm.toLowerCase();
-      result = result.filter((p) => p.name.toLowerCase().includes(q));
+
+      result = result.filter((p: any) => p.name.toLowerCase().includes(q));
     }
 
     if (this.selectedCategory) {
-      result = result.filter((p) => p.category === this.selectedCategory);
+      result = result.filter(
+        (p: any) => p.category?.name === this.selectedCategory,
+      );
     }
 
     return result;
@@ -77,12 +80,14 @@ export class ProductListComponent implements OnInit {
     const grouped = new Map<string, Product[]>();
     const filtered = this.displayedProducts;
 
-    filtered.forEach((product) => {
-      const category = product.category || 'Uncategorized';
-      if (!grouped.has(category)) {
-        grouped.set(category, []);
+    filtered.forEach((product: any) => {
+      const categoryName = product.category?.name || 'Uncategorized';
+
+      if (!grouped.has(categoryName)) {
+        grouped.set(categoryName, []);
       }
-      grouped.get(category)!.push(product);
+
+      grouped.get(categoryName)!.push(product);
     });
 
     return grouped;

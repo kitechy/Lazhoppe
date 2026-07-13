@@ -1,13 +1,18 @@
 const Product = require("../models/Product");
 const Store = require("../models/Store");
 
-// Customer: Get all active products
+// =======================================
+// CUSTOMER
+// =======================================
+
+// Get all active products
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find({ isActive: true }).populate(
-      "store",
-      "storeName",
-    );
+    const products = await Product.find({
+      isActive: true,
+    })
+      .populate("store", "storeName")
+      .populate("category", "name");
 
     res.json(products);
   } catch (e) {
@@ -17,13 +22,15 @@ exports.getProducts = async (req, res) => {
   }
 };
 
-// Customer: Get product by ID
+// Get product by ID
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate(
-      "store",
-      "storeName address phone description latitude longitude logo banner isActive",
-    );
+    const product = await Product.findById(req.params.id)
+      .populate(
+        "store",
+        "storeName address phone description latitude longitude logo banner isActive",
+      )
+      .populate("category", "name");
 
     if (!product) {
       return res.status(404).json({
@@ -34,19 +41,22 @@ exports.getProductById = async (req, res) => {
     res.json(product);
   } catch (e) {
     console.error("[ERROR] getProductById failed:", e);
+
     res.status(500).json({
       message: e.message,
     });
   }
 };
 
-// Customer: Get products by category
+// Get products by category (Category ID)
 exports.getProductsByCategory = async (req, res) => {
   try {
     const products = await Product.find({
       category: req.params.category,
       isActive: true,
-    }).populate("store", "storeName");
+    })
+      .populate("store", "storeName")
+      .populate("category", "name");
 
     res.json(products);
   } catch (e) {
@@ -56,7 +66,11 @@ exports.getProductsByCategory = async (req, res) => {
   }
 };
 
-// Store Owner: Get my products
+// =======================================
+// STORE OWNER
+// =======================================
+
+// Get my products
 exports.getMyProducts = async (req, res) => {
   try {
     const store = await Store.findOne({
@@ -71,9 +85,11 @@ exports.getMyProducts = async (req, res) => {
 
     const products = await Product.find({
       store: store._id,
-    }).sort({
-      createdAt: -1,
-    });
+    })
+      .populate("category", "name")
+      .sort({
+        createdAt: -1,
+      });
 
     res.json(products);
   } catch (e) {
@@ -83,7 +99,7 @@ exports.getMyProducts = async (req, res) => {
   }
 };
 
-// Store Owner: Create product
+// Create product
 exports.createProduct = async (req, res) => {
   try {
     const store = await Store.findOne({
@@ -93,6 +109,15 @@ exports.createProduct = async (req, res) => {
     if (!store) {
       return res.status(404).json({
         message: "Store not found",
+      });
+    }
+
+    if (
+      !store.allowedCategories ||
+      !store.allowedCategories.some((id) => id.toString() === req.body.category)
+    ) {
+      return res.status(403).json({
+        message: "This category is not assigned to your store.",
       });
     }
 
@@ -106,7 +131,11 @@ exports.createProduct = async (req, res) => {
       imageUrl: req.body.imageUrl,
     });
 
-    res.status(201).json(product);
+    const populatedProduct = await Product.findById(product._id)
+      .populate("store", "storeName")
+      .populate("category", "name");
+
+    res.status(201).json(populatedProduct);
   } catch (e) {
     res.status(500).json({
       message: e.message,
@@ -114,12 +143,27 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Store Owner: Update product
+// Update product
 exports.updateProduct = async (req, res) => {
   try {
     const store = await Store.findOne({
       owner: req.user.id,
     });
+
+    if (!store) {
+      return res.status(404).json({
+        message: "Store not found",
+      });
+    }
+
+    if (
+      !store.allowedCategories ||
+      !store.allowedCategories.some((id) => id.toString() === req.body.category)
+    ) {
+      return res.status(403).json({
+        message: "This category is not assigned to your store.",
+      });
+    }
 
     const product = await Product.findOne({
       _id: req.params.id,
@@ -142,7 +186,11 @@ exports.updateProduct = async (req, res) => {
 
     await product.save();
 
-    res.json(product);
+    const populatedProduct = await Product.findById(product._id)
+      .populate("store", "storeName")
+      .populate("category", "name");
+
+    res.json(populatedProduct);
   } catch (e) {
     res.status(500).json({
       message: e.message,
@@ -150,7 +198,7 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
-// Store Owner: Delete product
+// Delete product
 exports.deleteProduct = async (req, res) => {
   try {
     const store = await Store.findOne({
@@ -180,6 +228,7 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
+// Toggle product status
 exports.toggleProductStatus = async (req, res) => {
   try {
     const store = await Store.findOne({
@@ -220,6 +269,7 @@ exports.toggleProductStatus = async (req, res) => {
   }
 };
 
+// Upload image
 exports.uploadImage = async (req, res) => {
   try {
     if (!req.file) {

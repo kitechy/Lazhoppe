@@ -27,6 +27,18 @@
     </div>
 
     <div
+      routerLink="/admin/stores"
+      class="flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200"
+      [ngClass]="
+        isActive('/admin/stores') ? 'bg-[#C8A97E] text-[#2E2E2E]' : 'text-white'
+      "
+    >
+      <i class="fa-solid fa-store"></i>
+
+      <span>Stores</span>
+    </div>
+
+    <div
       class="p-2 rounded-xl flex gap-2 items-center transition-colors"
       [ngClass]="
         isActive('/admin/applications')

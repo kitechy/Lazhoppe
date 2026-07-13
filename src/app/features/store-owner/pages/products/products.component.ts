@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Product } from 'src/app/models/product';
 import { ProductService } from '../../services/product.service';
 
@@ -9,6 +10,9 @@ import { ProductService } from '../../services/product.service';
 })
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
+
+  categories: any[] = [];
+
   editingProduct = false;
   showAddModal = false;
   loading = false;
@@ -17,6 +21,7 @@ export class ProductsComponent implements OnInit {
   selectedProductId = '';
   selectedImage: File | null = null;
   imagePreviewUrl: string | null = null;
+
   backendUrl = 'http://localhost:3000';
 
   newProduct = {
@@ -28,10 +33,25 @@ export class ProductsComponent implements OnInit {
     imageUrl: '',
   };
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private http: HttpClient,
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.http
+      .get<any[]>(`${this.backendUrl}/api/stores/my/categories`)
+      .subscribe({
+        next: (categories) => {
+          this.categories = categories;
+        },
+        error: console.error,
+      });
   }
 
   openAddModal() {
@@ -69,7 +89,7 @@ export class ProductsComponent implements OnInit {
   onImageSelected(event: Event) {
     const input = event.target as HTMLInputElement;
 
-    if (!input.files || input.files.length === 0) {
+    if (!input.files?.length) {
       this.selectedImage = null;
       this.imagePreviewUrl = null;
       return;
@@ -86,15 +106,11 @@ export class ProductsComponent implements OnInit {
       this.productService.uploadImage(this.selectedImage).subscribe({
         next: (response) => {
           this.newProduct.imageUrl = response.imageUrl;
-
           this.saveProductToDatabase();
         },
-
         error: (err) => {
           console.error(err);
-
           this.uploadingImage = false;
-
           alert('Image upload failed.');
         },
       });
@@ -110,6 +126,7 @@ export class ProductsComponent implements OnInit {
 
     this.selectedProductId = product._id;
     this.selectedImage = null;
+
     this.imagePreviewUrl = product.imageUrl
       ? this.getImageUrl(product.imageUrl)
       : null;
@@ -117,7 +134,10 @@ export class ProductsComponent implements OnInit {
     this.newProduct = {
       name: product.name,
       description: product.description,
-      category: product.category,
+      category:
+        typeof product.category === 'string'
+          ? product.category
+          : product.category?._id || '',
       price: product.price,
       stock: product.stock,
       imageUrl: product.imageUrl,
@@ -133,21 +153,12 @@ export class ProductsComponent implements OnInit {
         .subscribe({
           next: () => {
             this.uploadingImage = false;
-            this.selectedImage = null;
-            this.imagePreviewUrl = null;
-
-            alert('Product updated successfully.');
-
             this.closeAddModal();
-
             this.loadProducts();
           },
-
           error: (err) => {
             console.error(err);
-
             this.uploadingImage = false;
-
             alert(err.error.message);
           },
         });
@@ -158,18 +169,12 @@ export class ProductsComponent implements OnInit {
     this.productService.createProduct(this.newProduct).subscribe({
       next: () => {
         this.uploadingImage = false;
-        this.selectedImage = null;
-        this.imagePreviewUrl = null;
         this.closeAddModal();
-
         this.loadProducts();
       },
-
       error: (err) => {
         console.error(err);
-
         this.uploadingImage = false;
-
         alert(err.error.message);
       },
     });
@@ -210,9 +215,7 @@ export class ProductsComponent implements OnInit {
     }
 
     this.productService.toggleStatus(product._id).subscribe({
-      next: () => {
-        this.loadProducts();
-      },
+      next: () => this.loadProducts(),
       error: (err) => {
         console.error(err);
         alert(err.error.message);

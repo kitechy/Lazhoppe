@@ -64,21 +64,7 @@ export class AuthService {
     return JSON.parse(user);
   }
 
-  isAdmin(): boolean {
-    return this.getCurrentUser()?.role === 'admin';
-  }
-
-  isStoreOwner(): boolean {
-    return this.getCurrentUser()?.role === 'store-owner';
-  }
-
-  isCustomer(): boolean {
-    return this.getCurrentUser()?.role === 'customer';
-  }
-
   getProfile() {
     return this.http.get('http://localhost:3000/api/auth/profile');
   }
-
-  
 }

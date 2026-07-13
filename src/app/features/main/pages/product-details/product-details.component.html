@@ -71,7 +71,10 @@
 
           <!-- Category -->
           <p class="text-[#2E2E2E] text-sm">
-            Category: <strong class="text-light">{{ product.category }}</strong>
+            Category:
+            <strong class="text-light">
+              {{ getCategoryName() }}
+            </strong>
           </p>
 
           <!-- Description -->

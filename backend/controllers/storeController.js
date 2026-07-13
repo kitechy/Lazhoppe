@@ -167,3 +167,88 @@ exports.getDashboard = async (req, res) => {
     });
   }
 };
+
+// =======================================
+// ADMIN - GET ALL STORES
+// =======================================
+
+exports.getAllStores = async (req, res) => {
+  try {
+    const stores = await Store.find()
+      .populate("owner", "firstName lastName email")
+      .populate("allowedCategories", "name")
+      .sort({ createdAt: -1 });
+
+    res.json(stores);
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to load stores.",
+    });
+  }
+};
+
+// =======================================
+// ADMIN - ASSIGN CATEGORIES
+// =======================================
+
+exports.assignCategories = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { categories } = req.body;
+
+    const store = await Store.findById(id);
+
+    if (!store) {
+      return res.status(404).json({
+        message: "Store not found.",
+      });
+    }
+
+    store.allowedCategories = categories;
+
+    await store.save();
+
+    const updatedStore = await Store.findById(id)
+      .populate("owner", "firstName lastName")
+      .populate("allowedCategories", "name");
+
+    res.json({
+      message: "Categories assigned successfully.",
+      store: updatedStore,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to assign categories.",
+    });
+  }
+};
+
+// =======================================
+// STORE OWNER - GET MY ALLOWED CATEGORIES
+// =======================================
+
+exports.getMyCategories = async (req, res) => {
+  try {
+    const store = await Store.findOne({
+      owner: req.user.id,
+    }).populate("allowedCategories");
+
+    if (!store) {
+      return res.status(404).json({
+        message: "Store not found.",
+      });
+    }
+
+    res.json(store.allowedCategories);
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to load categories.",
+    });
+  }
+};

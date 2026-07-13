@@ -204,6 +204,14 @@ export class ProductDetailsComponent {
     });
   }
 
+  getCategoryName(): string {
+    if (!this.product?.category) return '';
+
+    return typeof this.product.category === 'string'
+      ? this.product.category
+      : this.product.category.name;
+  }
+
   ngOnDestroy() {
     if (this.toastTimeout) {
       clearTimeout(this.toastTimeout);

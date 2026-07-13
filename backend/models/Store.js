@@ -50,6 +50,14 @@ const storeSchema = new mongoose.Schema(
       default: "",
     },
 
+    // Categories that this store is allowed to sell
+    allowedCategories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
+
     isActive: {
       type: Boolean,
       default: true,

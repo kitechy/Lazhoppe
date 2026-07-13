@@ -10,6 +10,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 
 import { AdminLoginComponent } from './auth/admin-login/admin-login.component';
 import { FormsModule } from '@angular/forms';
+import { StoresComponent } from './pages/stores/stores.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { FormsModule } from '@angular/forms';
     ApplicationsComponent,
     SidebarComponent,
     AdminLoginComponent,
+    StoresComponent,
   ],
   imports: [CommonModule, AdminRoutingModule, FormsModule],
 })

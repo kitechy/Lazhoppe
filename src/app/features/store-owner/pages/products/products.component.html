@@ -140,12 +140,28 @@
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-gray-300 mb-2"> Category </label>
+            <label class="block text-gray-300 mb-2">Category</label>
 
-            <input
+            <select
               [(ngModel)]="newProduct.category"
               class="w-full rounded-lg bg-[#1E1E1E] text-white p-3"
-            />
+            >
+              <option value="">Select Category</option>
+
+              <option
+                *ngFor="let category of categories"
+                [value]="category._id"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+
+            <p
+              *ngIf="categories.length === 0"
+              class="text-red-400 text-sm mt-2"
+            >
+              Your store has no assigned categories. Contact an administrator.
+            </p>
           </div>
 
           <div>

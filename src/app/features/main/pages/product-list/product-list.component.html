@@ -1,14 +1,4 @@
 <section class="p-8 mt-8">
-  <div *ngIf="selectedCategory" class="mb-8">
-    <button
-      (click)="goBackToShop()"
-      class="flex items-center gap-2 text-primary hover:text-light transition"
-    >
-      <i class="fa-solid fa-arrow-left"></i>
-      Back to Shop
-    </button>
-  </div>
-
   <div class="flex items-center justify-between mb-12 gap-4">
     <div>
       <h4 class="text-primary">
@@ -47,14 +37,6 @@
             <div class="w-5/6 text-center">
               <strong class="text-dark">{{ product.name }}</strong>
               <p class="text-sm text-gray-600">{{ "₱ " + product.price }}</p>
-            </div>
-            <div
-              class="bg-primary p-4 w-5/6 text-center text-light rounded-lg hover:opacity-90 transition font-semibold"
-              (click)="addToCart(product)"
-            >
-              <button>
-                <i class="fa-solid fa-cart-arrow-down"></i> Add to Cart
-              </button>
             </div>
           </div>
         </div>

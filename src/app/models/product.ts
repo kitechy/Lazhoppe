@@ -10,7 +10,12 @@ export interface Product {
   price: number;
   stock: number;
 
-  category: string;
+  category:
+    | string
+    | {
+        _id: string;
+        name: string;
+      };
 
   imageUrl: string;
 
