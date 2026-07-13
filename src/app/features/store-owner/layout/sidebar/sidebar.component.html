@@ -43,6 +43,18 @@
     <div
       class="p-2 rounded-xl flex gap-2 items-center transition-colors"
       [ngClass]="
+        isActive('/store-owner/orders')
+          ? 'bg-[#C8A97E] text-[#2E2E2E]'
+          : 'text-white'
+      "
+    >
+      <i class="fa-solid fa-box"></i>
+      <a routerLink="/store-owner/orders" class="w-full">Orders</a>
+    </div>
+
+    <div
+      class="p-2 rounded-xl flex gap-2 items-center transition-colors"
+      [ngClass]="
         isActive('/store-owner/setup-store')
           ? 'bg-[#C8A97E] text-[#2E2E2E]'
           : 'text-white'

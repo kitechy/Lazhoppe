@@ -1,0 +1,79 @@
+<div class="min-h-screen bg-[#0D0D0D] flex">
+  <!-- Sidebar -->
+
+  <aside class="w-72 bg-[#111111] border-r border-[#2A2A2A] flex flex-col">
+    <!-- Logo -->
+
+    <div class="p-8 border-b border-[#2A2A2A]">
+      <h1 class="text-3xl font-bold text-[#C8A97E]">RVSD</h1>
+
+      <p class="text-gray-500 text-sm mt-2">Courier Panel</p>
+    </div>
+
+    <!-- Navigation -->
+
+    <nav class="flex-1 py-6">
+      <a
+        routerLink="/courier/dashboard"
+        routerLinkActive="bg-[#1D1D1D] text-[#C8A97E]"
+        class="flex items-center gap-4 px-8 py-4 text-gray-300 hover:bg-[#1A1A1A]"
+      >
+        <i class="fa-solid fa-chart-line w-6"></i>
+        Dashboard
+      </a>
+
+      <a
+        routerLink="/courier/orders"
+        routerLinkActive="bg-[#1D1D1D] text-[#C8A97E]"
+        class="flex items-center gap-4 px-8 py-4 text-gray-300 hover:bg-[#1A1A1A]"
+      >
+        <i class="fa-solid fa-box w-6"></i>
+        Available Orders
+      </a>
+
+      <a
+        routerLink="/courier/history"
+        routerLinkActive="bg-[#1D1D1D] text-[#C8A97E]"
+        class="flex items-center gap-4 px-8 py-4 text-gray-300 hover:bg-[#1A1A1A]"
+      >
+        <i class="fa-solid fa-truck w-6"></i>
+        My Deliveries
+      </a>
+    </nav>
+
+    <!-- Bottom -->
+
+    <div class="border-t border-[#2A2A2A] p-6">
+      <div class="flex items-center gap-4 mb-6">
+        <div
+          class="w-12 h-12 rounded-full bg-[#C8A97E] flex items-center justify-center text-black font-bold text-lg"
+        >
+          {{ currentUser?.firstName?.charAt(0) }}
+        </div>
+
+        <div>
+          <h3 class="text-white font-semibold">
+            {{ currentUser?.firstName }}
+            {{ currentUser?.lastName }}
+          </h3>
+
+          <p class="text-gray-500 text-sm">Courier</p>
+        </div>
+      </div>
+
+      <button
+        (click)="logout()"
+        class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold"
+      >
+        <i class="fa-solid fa-right-from-bracket mr-2"></i>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+
+  <main class="flex-1 p-10 overflow-y-auto">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -20,6 +20,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'courier',
+    loadChildren: () =>
+      import('./features/courier/courier.module').then((m) => m.CourierModule),
+  },
+  {
     path: 'messages',
     loadChildren: () =>
       import('./features/messages/messages.module').then(
@@ -30,6 +35,13 @@ const routes: Routes = [
     path: 'orders',
     loadChildren: () =>
       import('./features/orders/orders.module').then((m) => m.OrdersModule),
+  },
+  {
+    path: 'checkout',
+    loadChildren: () =>
+      import('./features/checkout/checkout.module').then(
+        (m) => m.CheckoutModule,
+      ),
   },
 ];
 

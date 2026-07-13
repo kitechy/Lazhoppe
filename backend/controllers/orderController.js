@@ -53,7 +53,6 @@ exports.placeOrder = async (req, res) => {
     }
 
     const deliveryFee = 50;
-
     const total = subtotal + deliveryFee;
 
     const order = await Order.create({
@@ -187,6 +186,135 @@ exports.getOrder = async (req, res) => {
 
     res.status(500).json({
       message: "Failed to load order.",
+    });
+  }
+};
+
+// =======================================
+// COURIER
+// =======================================
+
+exports.getAvailableOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      status: "Ready for Pickup",
+      courier: null,
+    })
+      .populate("store", "storeName address phone")
+      .populate("customer", "firstName lastName")
+      .populate("items.product", "name imageUrl");
+
+    res.json(orders);
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to load available orders.",
+    });
+  }
+};
+
+exports.acceptDelivery = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found.",
+      });
+    }
+
+    if (order.courier) {
+      return res.status(400).json({
+        message: "Order already accepted.",
+      });
+    }
+
+    order.courier = req.user.id;
+    order.status = "Picked Up";
+    order.pickedUpAt = new Date();
+
+    await order.save();
+
+    res.json({
+      message: "Delivery accepted successfully.",
+      order,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to accept delivery.",
+    });
+  }
+};
+
+exports.getCourierOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      courier: req.user.id,
+    })
+      .populate("store", "storeName address phone")
+      .populate("customer", "firstName lastName phone")
+      .populate("items.product", "name imageUrl")
+      .sort({
+        createdAt: -1,
+      });
+
+    res.json(orders);
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to load courier orders.",
+    });
+  }
+};
+
+exports.updateDeliveryStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const validStatuses = ["Picked Up", "On the Way", "Delivered"];
+
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        message: "Invalid delivery status.",
+      });
+    }
+
+    const order = await Order.findOne({
+      _id: req.params.id,
+      courier: req.user.id,
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found.",
+      });
+    }
+
+    order.status = status;
+
+    if (status === "Picked Up") {
+      order.pickedUpAt = new Date();
+    }
+
+    if (status === "Delivered") {
+      order.deliveredAt = new Date();
+    }
+
+    await order.save();
+
+    res.json({
+      message: "Delivery status updated.",
+      order,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to update delivery status.",
     });
   }
 };

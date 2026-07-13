@@ -14,19 +14,15 @@ export class OrderService {
     return this.http.post(this.apiUrl, data);
   }
 
-  getMyOrders(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/my`);
+  getMyOrders(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/my`);
   }
 
-  getOrder(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  getStoreOrders(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/store`);
   }
 
-  getStoreOrders(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/store`);
-  }
-
-  updateStatus(id: string, status: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/status`, { status });
+  updateDeliveryStatus(id: string, status: string) {
+    return this.http.patch(`${this.apiUrl}/${id}/delivery-status`, { status });
   }
 }

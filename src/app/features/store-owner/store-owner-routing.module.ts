@@ -31,15 +31,15 @@ const routes: Routes = [
         component: ProductsComponent,
       },
       {
+        path: 'orders',
+        component: OrdersComponent,
+      },
+      {
         path: 'messages',
         loadChildren: () =>
           import('../../features/messages/messages.module').then(
             (m) => m.MessagesModule,
           ),
-      },
-      {
-        path: 'orders',
-        component: OrdersComponent,
       },
     ],
   },

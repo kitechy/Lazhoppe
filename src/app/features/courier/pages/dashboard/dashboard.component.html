@@ -1,1 +1,81 @@
-<p>dashboard works!</p>
+<div class="flex flex-col">
+  <h1 class="text-md text-[#C8A97E]">COURIER DASHBOARD</h1>
+
+  <b class="text-4xl text-white"> Welcome back, Courier. </b>
+
+  <p class="text-[#8B8B8B] mt-2">Here's your delivery overview.</p>
+</div>
+
+<!-- Statistics -->
+
+<div class="grid grid-cols-3 gap-6 mt-10">
+  <div class="bg-[#141414] rounded-2xl p-6 border border-[#2A2A2A]">
+    <p class="text-gray-400 text-sm">Available Deliveries</p>
+
+    <h2 class="text-4xl font-bold text-[#C8A97E] mt-3">
+      {{ availableOrders }}
+    </h2>
+  </div>
+
+  <div class="bg-[#141414] rounded-2xl p-6 border border-[#2A2A2A]">
+    <p class="text-gray-400 text-sm">Active Deliveries</p>
+
+    <h2 class="text-4xl font-bold text-blue-400 mt-3">
+      {{ activeDeliveries }}
+    </h2>
+  </div>
+
+  <div class="bg-[#141414] rounded-2xl p-6 border border-[#2A2A2A]">
+    <p class="text-gray-400 text-sm">Delivered</p>
+
+    <h2 class="text-4xl font-bold text-green-400 mt-3">
+      {{ deliveredOrders }}
+    </h2>
+  </div>
+</div>
+
+<!-- Recent Deliveries -->
+
+<div class="bg-[#141414] rounded-2xl border border-[#2A2A2A] mt-8 p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-white text-xl font-semibold">Recent Deliveries</h2>
+  </div>
+
+  <table class="w-full">
+    <thead class="text-gray-500">
+      <tr>
+        <th class="text-left py-3">Store</th>
+
+        <th class="text-left py-3">Customer</th>
+
+        <th class="text-left py-3">Total</th>
+
+        <th class="text-left py-3">Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let order of recentDeliveries"
+        class="border-t border-[#2A2A2A]"
+      >
+        <td class="py-4 text-white">
+          {{ order.store.storeName }}
+        </td>
+
+        <td class="py-4 text-gray-300">
+          {{ order.customer.firstName }}
+          {{ order.customer.lastName }}
+        </td>
+
+        <td class="py-4 text-[#C8A97E]">₱{{ order.total }}</td>
+
+        <td class="py-4">
+          <span class="px-3 py-1 rounded-full text-sm bg-[#222]">
+            {{ order.status }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

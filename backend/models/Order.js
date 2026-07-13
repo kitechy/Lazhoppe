@@ -87,6 +87,16 @@ const orderSchema = new mongoose.Schema(
       default: "Pending",
     },
 
+    pickedUpAt: {
+      type: Date,
+      default: null,
+    },
+
+    deliveredAt: {
+      type: Date,
+      default: null,
+    },
+
     notes: {
       type: String,
       default: "",

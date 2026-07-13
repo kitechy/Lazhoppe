@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from 'src/app/features/orders/services/order.service';
 import { Order } from 'src/app/models/order';
 
-
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
@@ -35,7 +34,7 @@ export class OrdersComponent implements OnInit {
   }
 
   updateStatus(order: Order, status: string) {
-    this.orderService.updateStatus(order._id, status).subscribe({
+    this.orderService.updateDeliveryStatus(order._id, status).subscribe({
       next: () => {
         order.status = status;
       },

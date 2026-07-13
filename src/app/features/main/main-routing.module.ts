@@ -9,6 +9,7 @@ import { ApplyStoreComponent } from './store-owner/apply-store/apply-store.compo
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
 import { MyOrdersComponent } from '../orders/pages/my-orders/my-orders.component';
+import { CheckoutComponent } from '../checkout/pages/checkout/checkout.component';
 
 const routes: Routes = [
   {
@@ -36,16 +37,20 @@ const routes: Routes = [
         component: ProductDetailsComponent,
       },
       {
+        path: 'orders',
+        component: MyOrdersComponent,
+      },
+      {
+        path: 'checkout',
+        component: CheckoutComponent,
+      },
+      {
         path: 'messages',
         loadChildren: () =>
           import('../../features/messages/messages.module').then(
             (m) => m.MessagesModule,
           ),
         canActivate: [AuthGuard],
-      },
-      {
-        path: 'orders',
-        component: MyOrdersComponent,
       },
     ],
   },
