@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { Product } from 'src/app/models/product';
 import { Store } from 'src/app/models/store';
 import { MessageService } from 'src/app/features/messages/services/message.service';
-import { StoreService } from 'src/app/features/store-owner/services/store.service';
+import { ReviewService } from 'src/app/core/services/review.service';
 
 @Component({
   selector: 'app-product-details',
@@ -21,6 +21,9 @@ export class ProductDetailsComponent {
   quantity = 1;
   showToast = false;
   toastMessage = '';
+  reviews: any[] = [];
+  averageRating = 0;
+  totalReviews = 0;
   private toastTimeout?: ReturnType<typeof setTimeout>;
   backendUrl = 'http://localhost:3000';
 
@@ -36,6 +39,7 @@ export class ProductDetailsComponent {
     private cartService: CartService,
     private authService: AuthService,
     private messageService: MessageService,
+    private reviewService: ReviewService,
   ) {}
 
   ngOnInit() {
@@ -53,6 +57,7 @@ export class ProductDetailsComponent {
     this.shopService.getProduct(id).subscribe({
       next: (product) => {
         this.product = product;
+        this.loadReviews(product._id);
 
         // Handle store data from product
         if (product.store) {
@@ -182,6 +187,19 @@ export class ProductDetailsComponent {
       error: (err) => {
         console.error(err);
         alert('Unable to start conversation.');
+      },
+    });
+  }
+
+  loadReviews(productId: string) {
+    this.reviewService.getProductReviews(productId).subscribe({
+      next: (data) => {
+        this.reviews = data.reviews;
+        this.averageRating = data.averageRating;
+        this.totalReviews = data.totalReviews;
+      },
+      error: (err) => {
+        console.error(err);
       },
     });
   }
