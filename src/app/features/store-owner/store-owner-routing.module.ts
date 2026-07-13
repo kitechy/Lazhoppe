@@ -5,6 +5,7 @@ import { StoreOwnerGuard } from 'src/app/core/guards/store-owner.guard';
 import { CreateStoreComponent } from './pages/create-store/create-store.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ProductsComponent } from './pages/products/products.component';
+import { OrdersComponent } from './pages/orders/orders.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
           import('../../features/messages/messages.module').then(
             (m) => m.MessagesModule,
           ),
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent,
       },
     ],
   },

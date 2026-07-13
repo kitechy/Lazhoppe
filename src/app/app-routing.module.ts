@@ -26,6 +26,11 @@ const routes: Routes = [
         (m) => m.MessagesModule,
       ),
   },
+  {
+    path: 'orders',
+    loadChildren: () =>
+      import('./features/orders/orders.module').then((m) => m.OrdersModule),
+  },
 ];
 
 @NgModule({

@@ -12,6 +12,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const storeRoutes = require("./routes/storeRoutes");
 const productRoutes = require("./routes/productRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running!");

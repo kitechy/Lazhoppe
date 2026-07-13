@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { DatePipe } from '@angular/common';
 import { StoreOwnerRoutingModule } from './store-owner-routing.module';
 
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -11,6 +11,7 @@ import { StoreOwnerLayoutComponent } from './layout/store-owner-layout/store-own
 import { GoogleMapsModule } from '@angular/google-maps';
 import { FormsModule } from '@angular/forms';
 import { MessagesModule } from '../messages/messages.module';
+import { OrdersComponent } from './pages/orders/orders.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MessagesModule } from '../messages/messages.module';
     ProductsComponent,
     SidebarComponent,
     StoreOwnerLayoutComponent,
+    OrdersComponent,
   ],
   imports: [
     CommonModule,

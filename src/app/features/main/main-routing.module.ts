@@ -8,6 +8,7 @@ import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { ApplyStoreComponent } from './store-owner/apply-store/apply-store.component';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
+import { MyOrdersComponent } from '../orders/pages/my-orders/my-orders.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
             (m) => m.MessagesModule,
           ),
         canActivate: [AuthGuard],
+      },
+      {
+        path: 'orders',
+        component: MyOrdersComponent,
       },
     ],
   },
