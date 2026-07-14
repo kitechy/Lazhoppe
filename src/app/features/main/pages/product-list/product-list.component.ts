@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ShopService } from '../../product/shop.service';
 import { Product } from 'src/app/models/product';
 import { CartService } from '../../cart/cart.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { Store } from '@ngrx/store';
+
+import { loadProducts } from 'src/app/store/products/product.actions';
+import { selectProducts } from 'src/app/store/products/product.selectors';
 
 @Component({
   selector: 'app-product-list',
@@ -12,19 +16,44 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+
   searchTerm = '';
   errorMessage = '';
+
   productsPerCategory = 5;
+
   selectedCategory: string | null = null;
+
   backendUrl = 'http://localhost:3000';
 
+  toastMessage = '';
+  showToast = false;
+
+  private toastTimeout?: ReturnType<typeof setTimeout>;
+
   constructor(
-    private shopService: ShopService,
     private cartService: CartService,
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private store: Store,
   ) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.selectedCategory = params['category'] || null;
+    });
+
+    // Dispatch the action
+    this.store.dispatch(loadProducts());
+
+    // Listen to products in the store
+    this.store.select(selectProducts).subscribe({
+      next: (products) => {
+        this.products = products;
+      },
+    });
+  }
 
   getImageUrl(imageUrl: string | null | undefined): string {
     if (!imageUrl) {
@@ -38,33 +67,13 @@ export class ProductListComponent implements OnInit {
     return `${this.backendUrl}${imageUrl}`;
   }
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      if (params['category']) {
-        this.selectedCategory = params['category'];
-      } else {
-        this.selectedCategory = null;
-      }
-    });
-
-    this.shopService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-      },
-      error: (error) => {
-        this.errorMessage = error?.message || 'Unable to load products.';
-        console.error('Failed to load products:', error);
-      },
-    });
-  }
-
   get displayedProducts(): Product[] {
     let result = [...this.products];
 
     if (this.searchTerm) {
       const q = this.searchTerm.toLowerCase();
 
-      result = result.filter((p: any) => p.name.toLowerCase().includes(q));
+      result = result.filter((p) => p.name.toLowerCase().includes(q));
     }
 
     if (this.selectedCategory) {
@@ -78,16 +87,15 @@ export class ProductListComponent implements OnInit {
 
   get groupedProducts(): Map<string, Product[]> {
     const grouped = new Map<string, Product[]>();
-    const filtered = this.displayedProducts;
 
-    filtered.forEach((product: any) => {
-      const categoryName = product.category?.name || 'Uncategorized';
+    this.displayedProducts.forEach((product: any) => {
+      const category = product.category?.name || 'Uncategorized';
 
-      if (!grouped.has(categoryName)) {
-        grouped.set(categoryName, []);
+      if (!grouped.has(category)) {
+        grouped.set(category, []);
       }
 
-      grouped.get(categoryName)!.push(product);
+      grouped.get(category)!.push(product);
     });
 
     return grouped;
@@ -102,8 +110,10 @@ export class ProductListComponent implements OnInit {
   }
 
   getDisplayedProductsByCategory(category: string): Product[] {
-    const products = this.getProductsByCategory(category);
-    return products.slice(0, this.productsPerCategory);
+    return this.getProductsByCategory(category).slice(
+      0,
+      this.productsPerCategory,
+    );
   }
 
   hasMoreProducts(category: string): boolean {
@@ -119,10 +129,6 @@ export class ProductListComponent implements OnInit {
   goBackToShop(): void {
     this.router.navigate(['/shop']);
   }
-
-  toastMessage = '';
-  showToast = false;
-  private toastTimeout?: ReturnType<typeof setTimeout>;
 
   addToCart(product: Product): void {
     if (!this.authService.isLoggedIn()) {

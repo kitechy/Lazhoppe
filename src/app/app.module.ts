@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -13,6 +13,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
 import { AuthComponent } from './features/main/auth/auth/auth.component';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { productReducer } from './store/products/product.reducer';
+import { ProductEffects } from './store/products/product.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,14 @@ import { StoreModule } from '@ngrx/store';
     CartModule,
     HttpClientModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot(
+      {
+        products: productReducer,
+      },
+      {},
+    ),
+    EffectsModule.forRoot([ProductEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [
     {
