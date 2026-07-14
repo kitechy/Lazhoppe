@@ -12,6 +12,7 @@ import { RegisterComponent } from './features/main/auth/register/register.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
 import { AuthComponent } from './features/main/auth/auth/auth.component';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AuthComponent } from './features/main/auth/auth/auth.component';
     CartModule,
     HttpClientModule,
     ReactiveFormsModule,
+    StoreModule.forRoot({}, {}),
   ],
   providers: [
     {

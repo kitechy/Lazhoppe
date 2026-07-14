@@ -222,4 +222,14 @@ export class ProductsComponent implements OnInit {
       },
     });
   }
+
+  getCategoryName(product: Product): string {
+    if (!product.category) {
+      return 'Uncategorized';
+    }
+
+    return typeof product.category === 'string'
+      ? product.category
+      : product.category.name;
+  }
 }

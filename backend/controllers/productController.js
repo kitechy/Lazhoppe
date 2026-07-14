@@ -182,7 +182,11 @@ exports.updateProduct = async (req, res) => {
     product.stock = req.body.stock;
     product.category = req.body.category;
     product.imageUrl = req.body.imageUrl;
-    product.isActive = req.body.isActive;
+
+    // Only update if the frontend actually sends it
+    if (req.body.isActive !== undefined) {
+      product.isActive = req.body.isActive;
+    }
 
     await product.save();
 

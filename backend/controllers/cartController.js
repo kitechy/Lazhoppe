@@ -41,7 +41,15 @@ exports.getCart = async (req, res) => {
       user: req.user.id,
     }).populate("product");
 
-    res.json(cart);
+    const invalidItems = cart.filter((item) => !item.product);
+
+    if (invalidItems.length) {
+      await Cart.deleteMany({
+        _id: { $in: invalidItems.map((i) => i._id) },
+      });
+    }
+
+    res.json(cart.filter((item) => item.product));
   } catch (err) {
     console.error(err);
 
